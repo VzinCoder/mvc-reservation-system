@@ -1,12 +1,14 @@
 const express = require('express')
 const server = express()
 
+server.set('views','src/views')
+server.set('view engine','ejs')
 
 const PORT = 3000 
 
 
 server.get('/',(req,res)=> {
-    res.status(200).json({msg:"hello world"})
+    res.render('index.ejs')
 })
 
 server.listen(PORT,()=> {
