@@ -1,4 +1,11 @@
 const pg = require('pg')
-const { Client } = pg
-const client = new Client()
+const { Pool } = pg
 
+const pool = new Pool({
+    connectionString:process.env.DATABASE_URL
+})
+
+
+module.exports = {
+    pool,
+}
