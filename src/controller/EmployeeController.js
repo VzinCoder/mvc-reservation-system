@@ -4,7 +4,7 @@ class EmployeeController {
 
 
     static async getEmployee(req, res, next) {
-        res.render('index.ejs')
+        res.render('employee/list.ejs')
     }
 
 
