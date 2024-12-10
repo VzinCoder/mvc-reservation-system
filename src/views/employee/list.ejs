@@ -22,7 +22,6 @@
                                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                        <tr>
-                                          <th>ID</th>
                                           <th>Name</th>
                                           <th>Salary</th>
                                           <th>CPF</th>
@@ -31,25 +30,47 @@
                                        </tr>
                                     </thead>
                                     <tbody>
-                                       <tr>
-                                          <td>1</td>
-                                          <td>Vinicius</td>
-                                          <td>2500</td>
-                                          <td>111.111.111-65</td>
-                                          <td>2011/04/25</td>
-                                          <td>
-                                             <a href="#" class="btn btn-primary btn-circle">
-                                                <i class="fas fa-eye"></i>
-                                             </a>
-                                             <a href="#" class="btn btn-danger btn-circle">
-                                                <i class="fas fa-trash"></i>
-                                             </a>
-                                          </td>
-                                       </tr>
+                                       <% if(employees.length===0) {%>
+                                          <tr>
+                                             <td colspan="5" class="text-center">No employees registered.</td>
+                                          </tr>
+                                          <%}%>
+                                             <% for(employee of employees){ %>
+                                                <tr>
+                                                   <td>
+                                                      <%= employee.name %>
+                                                   </td>
+                                                   <td>
+                                                      <%= employee.salary %>
+                                                   </td>
+                                                   <td>
+                                                      <%= employee.cpf %>
+                                                   </td>
+                                                   <td>
+                                                      <%= employee.created_at %>
+                                                   </td>
+                                                   <td>
+                                                      <div class="d-flex gap-2  justify-content-around">
+                                                         <a href="#" class="btn btn-primary btn-circle">
+                                                            <i class="fas fa-eye"></i>
+                                                         </a>
+                                                         <a href="#" class="btn btn-danger btn-circle">
+                                                            <i class="fas fa-trash"></i>
+                                                         </a>
+                                                      </div>
+                                                   </td>
+                                                </tr>
+                                                <% } %>
                                     </tbody>
                                  </table>
                               </div>
                            </div>
+                        </div>
+
+                        <div>
+                           <a href="/employee/create" class="btn btn-primary btn-icon-split">
+                              <span class="text">Register Employee</span>
+                           </a>
                         </div>
                      </div>
                </div>

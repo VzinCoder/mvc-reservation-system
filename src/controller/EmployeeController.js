@@ -2,15 +2,18 @@ const { validationResult } = require('express-validator')
 const EmployeeModel = require('../model/EmployeeModel')
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt')
-
+const { format } = require('date-fns');
 
 class EmployeeController {
 
 
     static async getEmployee(req, res, next) {
         const employees = await EmployeeModel.findAll()
-        console.log(employees)
-        res.render('employee/list.ejs', { employees })
+        const employeesDateFormated = employees.map((employee) => {
+            const dateFormated = format(employee.created_at,'yy/MM/dd')
+            return {...employee,created_at:dateFormated }
+        })
+        res.render('employee/list.ejs', { employees : employeesDateFormated})
     }
 
 
