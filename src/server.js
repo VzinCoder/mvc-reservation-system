@@ -1,27 +1,53 @@
 require('dotenv').config()
+
+const session = require('express-session')
+const flash = require('connect-flash')
 const express = require('express')
 const cors = require('cors')
 const server = express()
 const path = require('path')
 const routerEmployee = require('./routes/employee')
+const { initDb } = require('./db/conn')
 
 
-server.set('views','src/views')
-server.set('view engine','ejs')
+const PORT = 3000
+const DIR_PUBLIC_FILES = path.join(__dirname, 'public')
 
-const PORT = 3000 
+const configSession = {
+    secret:process.env.COOKIE_KEY,
+    resave:false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60,
+        secure: false, 
+        httpOnly: true,
+    }
+}
 
-const DIR_PUBLIC_FILES = path.join(__dirname,'public')
+server.set('views', 'src/views')
+server.set('view engine', 'ejs')
 
 server.use(cors())
-server.use(express.urlencoded({extended:true}))
-server.use('/public',express.static(DIR_PUBLIC_FILES))
-server.use('/employee',routerEmployee)
+server.use(session(configSession))
+server.use(flash())
 
-server.get('/',(req,res)=> {
+server.use((req,res,next) => {
+    res.locals.sucessMessages = req.flash('sucess')
+    res.locals.errorMessages = req.flash('error')
+    next()
+})
+
+server.use(express.urlencoded({ extended: true }))
+server.use('/public', express.static(DIR_PUBLIC_FILES))
+server.use('/employee', routerEmployee)
+
+server.get('/', (req, res) => {
     res.render('index.ejs')
 })
 
-server.listen(PORT,()=> {
-    console.log(`Server on Port:${PORT}`)
+
+initDb().then(() => {
+    server.listen(PORT, () => {
+        console.log(`Server on Port:${PORT}`)
+    })
 })

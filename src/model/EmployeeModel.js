@@ -15,6 +15,12 @@ class EmployeeModel {
         }
     }
 
+    static async findByCpf(cpf){
+        const query = `SELECT * FROM employee where cpf = $1`
+        const result = await pool.query(query,[cpf])
+        return result.rows[0] || null
+    }
+
 }
 
 module.exports = EmployeeModel

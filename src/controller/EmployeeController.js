@@ -19,26 +19,36 @@ class EmployeeController {
     }
 
     static async postCreateEmployee(req, res, next) {
+        const { name, password, cpf, salary } = req.body
+
         const errors = validationResult(req)
-       
 
         if (!errors.isEmpty()) {
+            const errorsArr = errors.array()
+            const error = errorsArr[0]
+            req.flash('error', error.msg)
             return res.redirect('/employee/create')
         }
 
-        const { name, password, cpf, salary } = req.body
-        const hashPass = await bcrypt.hash(password,10)
-    
+        const employeeFound = await EmployeeModel.findByCpf(cpf)
+        if (employeeFound) {
+            req.flash('error', 'User with this CPF already exists. Please use a different CPF.')
+            return res.redirect('/employee/create')
+        }
+
+        const hashPass = await bcrypt.hash(password, 10)
+
         const employee = {
-            id: uuidv4(), 
-            password:hashPass,
+            id: uuidv4(),
+            password: hashPass,
             name,
             cpf,
             salary
         }
 
+        req.flash('sucess', `User with CPF ${cpf} has been successfully registered.`)
         await EmployeeModel.create(employee)
-        res.redirect('/employee/')
+        res.redirect('/employee/create')
     }
 
 
