@@ -17,6 +17,8 @@
                     <div id="content">
                         <%- include('../partials/topbar') -%>
                             <div class="container-fluid">
+                              <%- include('../partials/btn-back',{page:'/employee'}) -%>
+                                
                                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                     <h1 class="h3 mb-0 text-gray-800">Create Employee</h1>
                                 </div>
@@ -26,7 +28,7 @@
                                     <div class="card-body">
                                         <form method="POST" action="/employee/create">
 
-                                            <% if(errorMessages.length != 0 || sucessMessages.length != 0){%>
+                                            <% if(errorMessages.length !=0 || sucessMessages.length !=0){%>
                                                 <div class="alert <%= errorMessages[0]? 'alert-danger': 'alert-success' %> alert-dismissible fade show"
                                                     role="alert">
                                                     <p>
@@ -37,7 +39,7 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                            <%}%>
+                                                <%}%>
 
                                                     <!-- Name Field -->
                                                     <div class="mb-3">
