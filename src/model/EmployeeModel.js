@@ -13,12 +13,22 @@ class EmployeeModel {
         if (result.rowCount === 0) {
             throw new Error('Failed to create user')
         }
+        return true
     }
 
     static async findByCpf(cpf){
         const query = `SELECT * FROM employee where cpf = $1`
         const result = await pool.query(query,[cpf])
         return result.rows[0] || null
+    }
+
+    static async deleteById(id){
+        const query = `DELETE FROM employee WHERE id = $1`
+        const result = await pool.query(query,[id])
+        if(result.rowCount === 0){
+            throw new Error('Failed to delete employee')
+        }
+        return true
     }
 
 }

@@ -1,4 +1,10 @@
-const { body } = require('express-validator')
+const { body, param } = require('express-validator')
+
+
+const deleteEmployeeValidator = () => {
+    const idValidation = param('id').isUUID()
+    return [idValidation]
+}
 
 const createEmployeeValidator = () => {
 
@@ -35,5 +41,6 @@ const createEmployeeValidator = () => {
 }
 
 module.exports = {
-    createEmployeeValidator
+    createEmployeeValidator,
+    deleteEmployeeValidator
 }

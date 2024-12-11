@@ -49,9 +49,20 @@ class EmployeeController {
             salary
         }
 
-        req.flash('sucess', `User with CPF ${cpf} has been successfully registered.`)
         await EmployeeModel.create(employee)
+        req.flash('sucess', `User with CPF ${cpf} has been successfully registered.`)
         res.redirect('/employee/create')
+    }
+
+    static async postDeleteEmployee(req,res,next){
+        const {id} = req.params
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.redirect('/employee/')
+        }
+
+        await EmployeeModel.deleteById(id)
+        res.redirect('/employee/')
     }
 
 
