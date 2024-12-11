@@ -1,0 +1,140 @@
+<%- include('../partials/head', { title: 'Create Employee' }) -%>
+    <!-- add styles here -->
+    <style>
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+        }
+    </style>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <%- include('../partials/sidebar', { path: 'employee' }) -%>
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <div id="content">
+                        <%- include('../partials/topbar') -%>
+                            <div class="container-fluid">
+                              <%- include('../partials/btn-back',{page:'/employee'}) -%>
+                                
+                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                    <h1 class="h3 mb-0 text-gray-800">Edit Employee</h1>
+                                </div>
+
+                                <!-- Start Form -->
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <form method="POST" action="/employee/create">
+
+                                            <% if(errorMessages.length !=0 || sucessMessages.length !=0){%>
+                                                <div class="alert <%= errorMessages[0]? 'alert-danger': 'alert-success' %> alert-dismissible fade show"
+                                                    role="alert">
+                                                    <p>
+                                                        <%= errorMessages[0] || sucessMessages[0] %>
+                                                    </p>
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <%}%>
+
+                                                    <!-- Name Field -->
+                                                    <div class="mb-3">
+                                                        <label for="name" class="form-label">Name</label>
+                                                        <input type="text" id="name" name="name" class="form-control"
+                                                            placeholder="Enter employee name" 
+                                                            value="<%= employee.name %>"
+                                                            required>
+                                                    </div>
+
+                                                    <!-- Salary Field -->
+                                                    <div class="mb-3">
+                                                        <label for="salary" class="form-label">Salary</label>
+                                                        <input type="number" id="salary" name="salary"
+                                                            class="form-control" placeholder="Enter salary" 
+                                                            value="<%= employee.salary %>"
+                                                            required>
+                                                    </div>
+
+                                                    <!-- CPF Field -->
+                                                    <div class="mb-3">
+                                                        <label for="cpf" class="form-label">CPF</label>
+                                                        <input type="text" id="cpf" name="cpf" class="form-control"
+                                                            placeholder="Enter CPF (e.g., 111.111.111-11)"
+                                                            pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
+                                                            value="<%= employee.cpf %>"
+                                                            required>
+                                                    </div>
+
+                                                    <!-- New Password Field -->
+                                                    <div class="mb-3 position-relative">
+                                                        <label for="password" class="form-label">New Password</label>
+                                                        <input type="password" id="password" name="password"
+                                                            class="form-control" placeholder="Enter password"
+                                                            minlength="6" required>
+                                                        <i id="togglePassword" class="fas fa-eye password-toggle"></i>
+                                                    </div>
+
+                                                    <!-- Confirm Password Field -->
+                                                    <div class="mb-3 position-relative">
+                                                        <label for="confirmPassword" class="form-label">Confirm
+                                                            Password</label>
+                                                        <input type="password" id="confirmPassword"
+                                                            name="confirmPassword" class="form-control"
+                                                            placeholder="Confirm your password" minlength="6" required>
+                                                        <i id="toggleConfirmPassword"
+                                                            class="fas fa-eye password-toggle"></i>
+                                                    </div>
+
+                                                    <!-- Submit Button -->
+                                                    <div class="text-center">
+                                                        <button type="submit" class="btn btn-primary">
+                                                            Edit Employee
+                                                        </button>
+                                                    </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- End Form -->
+
+                            </div>
+                    </div>
+                    <%- include('../partials/footer') -%>
+                </div>
+        </div>
+
+        <%- include('../partials/scripts') -%>
+            <!-- add scripts here -->
+            <script>
+                // Toggle password visibility
+                const togglePassword = document.getElementById('togglePassword');
+                const passwordField = document.getElementById('password');
+
+                togglePassword.addEventListener('click', function () {
+                    // Toggle the password field type
+                    const type = passwordField.type === 'password' ? 'text' : 'password';
+                    passwordField.type = type;
+
+                    // Toggle the eye icon
+                    this.classList.toggle('fa-eye-slash');
+                });
+
+                // Toggle confirm password visibility
+                const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+                const confirmPasswordField = document.getElementById('confirmPassword');
+
+                toggleConfirmPassword.addEventListener('click', function () {
+                    // Toggle the confirm password field type
+                    const type = confirmPasswordField.type === 'password' ? 'text' : 'password';
+                    confirmPasswordField.type = type;
+
+                    // Toggle the eye icon
+                    this.classList.toggle('fa-eye-slash');
+                });
+            </script>
+    </body>
+
+    </html>

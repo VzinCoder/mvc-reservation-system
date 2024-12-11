@@ -7,13 +7,13 @@ const { format } = require('date-fns');
 class EmployeeController {
 
 
-    static async getEmployee(req, res, next) {
+    static async getEmployees(req, res, next) {
         const employees = await EmployeeModel.findAll()
         const employeesDateFormated = employees.map((employee) => {
-            const dateFormated = format(employee.created_at,'yy/MM/dd')
-            return {...employee,created_at:dateFormated }
+            const dateFormated = format(employee.created_at, 'yyyy/MM/dd')
+            return { ...employee, created_at: dateFormated }
         })
-        res.render('employee/list.ejs', { employees : employeesDateFormated})
+        res.render('employee/list.ejs', { employees: employeesDateFormated })
     }
 
 
@@ -54,8 +54,8 @@ class EmployeeController {
         res.redirect('/employee/create')
     }
 
-    static async postDeleteEmployee(req,res,next){
-        const {id} = req.params
+    static async postDeleteEmployee(req, res, next) {
+        const { id } = req.params
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             return res.redirect('/employee/')
@@ -63,6 +63,28 @@ class EmployeeController {
 
         await EmployeeModel.deleteById(id)
         res.redirect('/employee/')
+    }
+
+
+    static async getPageEmployeeDetails(req, res, next) {
+        const { id } = req.params
+        const employee = await EmployeeModel.findEmployeeById(id)
+        if (!employee) {
+            return res.redirect('/employee/')
+        }
+
+        const dateFormated = format(employee.created_at, 'yyyy/MM/dd')
+        const employeeDateFormated = { ...employee, created_at: dateFormated }
+        res.render('employee/details', { employee: employeeDateFormated })
+    }
+
+    static async getPageEditEmployee(req, res, next) {
+        const { id } = req.params
+        const employee = await EmployeeModel.findEmployeeById(id)
+        if (!employee) {
+            return res.redirect('/employee/')
+        }
+        res.render('employee/edit', { employee })
     }
 
 

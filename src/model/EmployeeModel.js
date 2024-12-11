@@ -31,6 +31,12 @@ class EmployeeModel {
         return true
     }
 
+    static async findEmployeeById(id){
+        const query = `SELECT * FROM employee where id = $1`
+        const result = await pool.query(query,[id])
+        return result.rows[0] || null
+    }
+
 }
 
 module.exports = EmployeeModel

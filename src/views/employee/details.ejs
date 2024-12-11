@@ -1,0 +1,60 @@
+<%- include('../partials/head', { title: 'Details Employee' }) -%>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <%- include('../partials/sidebar', { path: 'employee' }) -%>
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <div id="content">
+                        <%- include('../partials/topbar') -%>
+                            <div class="container-fluid">
+                                <%- include('../partials/btn-back',{page:'/employee'}) -%>
+
+                                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                        <h1 class="h3 mb-0 text-gray-800">Employee Details</h1>
+                                    </div>
+
+
+                                    <!-- Start Table -->
+                                    <div class="card shadow">
+                                        <table class="table table-bordered mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Name:</th>
+                                                    <td>
+                                                        <%= employee.name %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>CPF:</th>
+                                                    <td>
+                                                        <%= employee.cpf %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Salary:</th>
+                                                    <td>
+                                                        <%= employee.salary %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Start Date:</th>
+                                                    <td>
+                                                        <%= employee.created_at %>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- End Table -->
+
+
+                            </div>
+                    </div>
+                    <%- include('../partials/footer') -%>
+                </div>
+        </div>
+        <%- include('../partials/scripts') -%>
+    </body>
+
+    </html>
