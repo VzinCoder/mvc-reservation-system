@@ -11,7 +11,7 @@ class EmployeeModel {
         const query = `INSERT INTO employee (id,name,password,cpf,salary) values ($1,$2,$3,$4,$5)`
         const result = await pool.query(query, [id, name, password, cpf, salary])
         if (result.rowCount === 0) {
-            throw new Error('Failed to create user')
+            throw new Error(`Failed to create user : ${result.command}`)
         }
         return true
     }
@@ -26,7 +26,7 @@ class EmployeeModel {
         const query = `DELETE FROM employee WHERE id = $1`
         const result = await pool.query(query,[id])
         if(result.rowCount === 0){
-            throw new Error('Failed to delete employee')
+            throw new Error(`Failed to delete employee : ${result.command}`)
         }
         return true
     }
@@ -41,7 +41,7 @@ class EmployeeModel {
         const query = `UPDATE employee SET name = $1,cpf = $2,salary = $3, password = $4 where id = $5`
         const result = await pool.query(query,[name,cpf,salary,password,id])
         if(result.rowCount === 0){
-            throw new Error('Failed to update employee')
+            throw new Error(`Failed to update employee : ${result.command}`)
         }
         return true
     }
