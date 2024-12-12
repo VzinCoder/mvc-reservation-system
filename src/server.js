@@ -40,11 +40,13 @@ server.use((req,res,next) => {
 server.use(express.urlencoded({ extended: true }))
 server.use('/public', express.static(DIR_PUBLIC_FILES))
 server.use('/employee', routerEmployee)
-
 server.get('/', (req, res) => {
     res.render('index.ejs')
 })
 
+server.use((req,res,next) =>{
+    res.render('404')
+})
 
 initDb().then(() => {
     server.listen(PORT, () => {
