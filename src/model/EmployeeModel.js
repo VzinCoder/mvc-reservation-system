@@ -31,10 +31,25 @@ class EmployeeModel {
         return true
     }
 
-    static async findEmployeeById(id){
+    static async findById(id){
         const query = `SELECT * FROM employee where id = $1`
         const result = await pool.query(query,[id])
         return result.rows[0] || null
+    }
+
+    static async updateEmployee({id,salary,cpf,password,name}){
+        const query = `UPDATE employee SET name = $1,cpf = $2,salary = $3, password = $4 where id = $5`
+        const result = await pool.query(query,[name,cpf,salary,password,id])
+        if(result.rowCount === 0){
+            throw new Error('Failed to update employee')
+        }
+        return true
+    }
+
+    static async existsById(id){
+        const query = "Select * from employee where id = $1"
+        const result = await pool.query(query,[id])
+        return Boolean(result.rows[0])
     }
 
 }

@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const EmployeeController = require('../controller/EmployeeController')
-const { createEmployeeValidator,idParamValidation} = require('../validator/employeeValidator')
+const { createEmployeeValidator,idParamValidation,editEmployeeValidator} = require('../validator/employeeValidator')
 
 router.get('/', (req, res, next) => {
     EmployeeController.getEmployees(req, res, next)
@@ -24,5 +24,9 @@ router.get('/details/:id',idParamValidation(),(req,res,next)=>{
 
 router.get('/edit/:id',idParamValidation(),(req,res,next) => {
     EmployeeController.getPageEditEmployee(req,res,next)
+})
+
+router.post('/edit/:id',editEmployeeValidator(),(req,res,next)=>{
+    EmployeeController.postEditEmployee(req,res,next)
 })
 module.exports = router

@@ -1,4 +1,4 @@
-<%- include('../partials/head', { title: 'Create Employee' }) -%>
+<%- include('../partials/head', { title: 'Edit Employee' }) -%>
     <!-- add styles here -->
     <style>
         .password-toggle {
@@ -26,8 +26,8 @@
                                 <!-- Start Form -->
                                 <div class="card shadow">
                                     <div class="card-body">
-                                        <form method="POST" action="/employee/create">
-
+                                        <form method="POST" action="/employee/edit/<%= employee.id %>">
+                                            
                                             <% if(errorMessages.length !=0 || sucessMessages.length !=0){%>
                                                 <div class="alert <%= errorMessages[0]? 'alert-danger': 'alert-success' %> alert-dismissible fade show"
                                                     role="alert">
@@ -69,12 +69,20 @@
                                                             required>
                                                     </div>
 
+                                                    <!--box password -->
+                                                    <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                                                        <input type="checkbox" class="custom-control-input" id="customControlInline">
+                                                        <label class="custom-control-label" for="customControlInline">Change password</label>
+                                                      </div>
+
                                                     <!-- New Password Field -->
                                                     <div class="mb-3 position-relative">
                                                         <label for="password" class="form-label">New Password</label>
                                                         <input type="password" id="password" name="password"
                                                             class="form-control" placeholder="Enter password"
-                                                            minlength="6" required>
+                                                            minlength="6"
+                                                            disabled
+                                                            >
                                                         <i id="togglePassword" class="fas fa-eye password-toggle"></i>
                                                     </div>
 
@@ -84,7 +92,7 @@
                                                             Password</label>
                                                         <input type="password" id="confirmPassword"
                                                             name="confirmPassword" class="form-control"
-                                                            placeholder="Confirm your password" minlength="6" required>
+                                                            placeholder="Confirm your password" minlength="6" disabled>
                                                         <i id="toggleConfirmPassword"
                                                             class="fas fa-eye password-toggle"></i>
                                                     </div>
@@ -134,6 +142,14 @@
                     // Toggle the eye icon
                     this.classList.toggle('fa-eye-slash');
                 });
+
+                // togle input password
+                const checkboxPassword = document.getElementById('customControlInline')
+                checkboxPassword.addEventListener('click',() => {
+                    passwordField.disabled = !checkboxPassword.checked
+                    confirmPasswordField.disabled = !checkboxPassword.checked
+                })
+             
             </script>
     </body>
 

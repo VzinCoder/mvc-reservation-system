@@ -57,7 +57,8 @@ class EmployeeController {
     static async postDeleteEmployee(req, res, next) {
         const { id } = req.params
         const errors = validationResult(req)
-        if (!errors.isEmpty()) {
+        const existsEmployee = await EmployeeModel.existsById(id)
+        if (!errors.isEmpty() || !existsEmployee) {
             return res.redirect('/employee/')
         }
 
@@ -68,7 +69,7 @@ class EmployeeController {
 
     static async getPageEmployeeDetails(req, res, next) {
         const { id } = req.params
-        const employee = await EmployeeModel.findEmployeeById(id)
+        const employee = await EmployeeModel.findById(id)
         if (!employee) {
             return res.redirect('/employee/')
         }
@@ -80,11 +81,65 @@ class EmployeeController {
 
     static async getPageEditEmployee(req, res, next) {
         const { id } = req.params
-        const employee = await EmployeeModel.findEmployeeById(id)
+        const erros = validationResult(req)
+        const errorMessage = 'Employee not found to edit'
+        const viewPath = 'employee/edit'
+
+        const viewModel = {
+            employee: {},
+            errorMessages: [errorMessage]
+        }
+
+        if (!erros.isEmpty()) {
+            return res.render(viewPath, viewModel)
+        }
+
+        const employee = await EmployeeModel.findById(id)
         if (!employee) {
-            return res.redirect('/employee/')
+            return res.render(viewPath, viewModel)
         }
         res.render('employee/edit', { employee })
+    }
+
+    static async postEditEmployee(req, res, next) {
+        const { id } = req.params
+        const { name, password, cpf, salary } = req.body
+        const errors = validationResult(req)
+
+        // verify input
+        if (!errors.isEmpty()) {
+            const errorsArr = errors.array()
+            const error = errorsArr[0]
+            req.flash('error', error.msg)
+            return res.redirect(`/employee/edit/${id}`)
+        }
+
+        //verify employee exists
+        const employee = await EmployeeModel.findById(id)
+        if (!employee) {
+            return res.redirect(`/employee/edit/${id}`)
+        }
+
+        //Check if someone with this CPF already exists.
+        const employeeFound = await EmployeeModel.findByCpf(cpf)
+        if (employeeFound && employeeFound.id != employee.id) {
+            req.flash('error', 'User with this CPF already exists. Please use a different CPF.')
+            return res.redirect(`/employee/edit/${id}`)
+        }
+
+        //update data
+        employee.name = name
+        employee.cpf = cpf
+        employee.salary = salary
+
+        if (password) {
+            const hashPass = await bcrypt.hash(password, 10)
+            employee.password = hashPass
+        }
+
+        await EmployeeModel.updateEmployee(employee)
+        req.flash('sucess', 'The employee has been successfully updated.')
+        return res.redirect(`/employee/edit/${id}`)
     }
 
 
