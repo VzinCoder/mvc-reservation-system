@@ -57,8 +57,12 @@ class EmployeeController {
     static async postDeleteEmployee(req, res, next) {
         const { id } = req.params
         const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.redirect('/employee/')
+        }
+
         const existsEmployee = await EmployeeModel.existsById(id)
-        if (!errors.isEmpty() || !existsEmployee) {
+        if (!existsEmployee) {
             return res.redirect('/employee/')
         }
 
@@ -69,6 +73,11 @@ class EmployeeController {
 
     static async getPageEmployeeDetails(req, res, next) {
         const { id } = req.params
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.redirect('/employee/')
+        }
+        
         const employee = await EmployeeModel.findById(id)
         if (!employee) {
             return res.redirect('/employee/')
