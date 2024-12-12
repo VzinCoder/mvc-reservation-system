@@ -124,7 +124,7 @@ class EmployeeController {
                 return res.render(viewPath, viewModel)
             }
     
-            const employee = await EmployeeModel.findById('gfag')
+            const employee = await EmployeeModel.findById(id)
             if (!employee) {
                 return res.render(viewPath, viewModel)
             }
