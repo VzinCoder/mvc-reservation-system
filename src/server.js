@@ -9,17 +9,16 @@ const path = require('path')
 const routerEmployee = require('./routes/employee')
 const { initDb } = require('./db/conn')
 
-
 const PORT = 3000
 const DIR_PUBLIC_FILES = path.join(__dirname, 'public')
 
 const configSession = {
-    secret:process.env.COOKIE_KEY,
-    resave:false,
+    secret: process.env.COOKIE_KEY,
+    resave: false,
     saveUninitialized: false,
     cookie: {
         maxAge: 1000 * 60 * 60,
-        secure: false, 
+        secure: false,
         httpOnly: true,
     }
 }
@@ -31,7 +30,7 @@ server.use(cors())
 server.use(session(configSession))
 server.use(flash())
 
-server.use((req,res,next) => {
+server.use((req, res, next) => {
     res.locals.sucessMessages = req.flash('sucess')
     res.locals.errorMessages = req.flash('error')
     next()
@@ -44,8 +43,17 @@ server.get('/', (req, res) => {
     res.render('index.ejs')
 })
 
-server.use((req,res,next) =>{
+server.use((req, res, next) => {
     res.render('404')
+})
+
+server.use((err, req, res, next) => {
+    const viewPath = '500'
+    const viewModel = {
+        env: process.env.NODE_ENV,
+        errorMessages: [err.message]
+    }
+    res.render(viewPath, viewModel)
 })
 
 initDb().then(() => {
