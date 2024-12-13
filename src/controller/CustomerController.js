@@ -1,14 +1,21 @@
 const { validationResult } = require("express-validator")
 const logger = require("../util/logger")
 const CustomerModel = require("../model/CustomerModel")
+const { format } = require('date-fns');
 const { v4: uuidv4 } = require('uuid');
 
 class CustomerController {
 
-    static getCustomers(req, res, next) {
+    static async getCustomers(req, res, next) {
         logger.info('Fetching all customer')
         try {
-            res.render('customer/list', { customers: [] })
+            const customers = await CustomerModel.findAll()
+            logger.info(`Found ${customers.length} customers`)
+            const customersDateFormated = customers.map((customer) => {
+                const dateFormated = format(customer.created_at, 'yyyy/MM/dd')
+                return { ...customer, created_at: dateFormated }
+            })
+            res.render('customer/list', { customers: customersDateFormated })
         } catch (error) {
             logger.error(`Error to fetching customers ${error.message}`)
             next(error)
