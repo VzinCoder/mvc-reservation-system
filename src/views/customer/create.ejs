@@ -1,0 +1,89 @@
+<%- include('../partials/head', { title: 'Create Customer' }) -%>
+    <!-- add styles here -->
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <%- include('../partials/sidebar', { path: 'customer' }) -%>
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <div id="content">
+                        <%- include('../partials/topbar') -%>
+                            <div class="container-fluid">
+                                <%- include('../partials/btn-back',{page:'/customer'}) -%>
+
+                                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                        <h1 class="h3 mb-0 text-gray-800">Create Customer</h1>
+                                    </div>
+
+                                    <!-- Start Form -->
+                                    <div class="card shadow">
+                                        <div class="card-body">
+                                            <form method="POST" action="/customer/create">
+
+                                                <% if(errorMessages.length !=0 || sucessMessages.length !=0){%>
+                                                    <div class="alert <%= errorMessages[0]? 'alert-danger': 'alert-success' %> alert-dismissible fade show"
+                                                        role="alert">
+                                                        <p>
+                                                            <%= errorMessages[0] || sucessMessages[0] %>
+                                                        </p>
+                                                        <button type="button" class="close" data-dismiss="alert"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <%}%>
+
+                                                        <!-- Name Field -->
+                                                        <div class="mb-3">
+                                                            <label for="name" class="form-label">Name</label>
+                                                            <input type="text" id="name" name="name"
+                                                                class="form-control" placeholder="Enter customer name"
+                                                                required>
+                                                        </div>
+
+                                                        <!-- Phone number Field -->
+                                                        <div class="mb-3">
+                                                            <label for="phone" class="form-label">Phone Number</label>
+                                                            <input type="number" id="phone" name="phone"
+                                                                class="form-control"
+                                                                placeholder="Enter customer phone number" required>
+                                                        </div>
+
+                                                        <!-- CPF Field -->
+                                                        <div class="mb-3">
+                                                            <label for="cpf" class="form-label">CPF</label>
+                                                            <input type="text" id="cpf" name="cpf" class="form-control"
+                                                                placeholder="Enter CPF (e.g., 111.111.111-11)"
+                                                                pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required>
+                                                        </div>
+
+                                                        <!-- Email Field -->
+                                                        <div class="mb-3">
+                                                            <label for="email" class="form-label">Email</label>
+                                                            <input type="email" id="email" name="email"
+                                                                class="form-control" placeholder="Enter customer email"
+                                                                required>
+                                                        </div>
+
+                                                        <!-- Submit Button -->
+                                                        <div class="text-center">
+                                                            <button type="submit" class="btn btn-primary">
+                                                                Create Customer
+                                                            </button>
+                                                        </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- End Form -->
+
+                            </div>
+                    </div>
+                    <%- include('../partials/footer') -%>
+                </div>
+        </div>
+
+        <%- include('../partials/scripts') -%>
+            <!-- add scripts here -->
+    </body>
+
+    </html>

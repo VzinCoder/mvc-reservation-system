@@ -7,6 +7,7 @@ const cors = require('cors')
 const server = express()
 const path = require('path')
 const routerEmployee = require('./routes/employee')
+const routerCustomer = require('./routes/customer')
 const { initDb } = require('./db/conn')
 
 const PORT = 3000
@@ -39,6 +40,8 @@ server.use((req, res, next) => {
 server.use(express.urlencoded({ extended: true }))
 server.use('/public', express.static(DIR_PUBLIC_FILES))
 server.use('/employee', routerEmployee)
+server.use('/customer',routerCustomer)
+
 server.get('/', (req, res) => {
     res.render('index.ejs')
 })
