@@ -8,7 +8,7 @@ class CustomerModel {
     }
 
     static async create({ id, name, phone, cpf, email }) {
-        const query = `INSERT INTO employee (id,name,phone,cpf,email) values ($1,$2,$3,$4,$5)`
+        const query = `INSERT INTO customer (id,name,phone,cpf,email) values ($1,$2,$3,$4,$5)`
         const result = await pool.query(query, [id, name, phone, cpf, email])
         if (result.rowCount === 0) {
             throw new Error(`Failed to create customer : ${result.command}`)
