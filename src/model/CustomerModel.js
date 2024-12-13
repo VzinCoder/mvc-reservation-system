@@ -22,6 +22,21 @@ class CustomerModel {
         const result = await pool.query(query,[cpf])
         return result.rows[0] || null
     }
+
+    static async deleteById(id){
+        const query = `DELETE FROM customer where id = $1`
+        const result = await pool.query(query,[id])
+        if(result.rowCount === 0){
+            throw new Error(`Failed to delete customer : ${result.command}`)
+        }
+        return true
+    }
+
+    static async existsById(id){
+        const query = "Select * from customer where id = $1"
+        const result = await pool.query(query,[id])
+        return Boolean(result.rows[0])
+    }
 }
 
 module.exports = CustomerModel

@@ -1,5 +1,6 @@
 const { body, param } = require('express-validator')
 
+const idParamValidation = () => param('id').isUUID()
 
 const createCustomerValidator = () => {
     const nameValidation = body('name')
@@ -30,5 +31,6 @@ const createCustomerValidator = () => {
 
 
 module.exports = {
-    createCustomerValidator
+    createCustomerValidator,
+    idParamValidation
 }

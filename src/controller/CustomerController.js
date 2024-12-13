@@ -64,6 +64,32 @@ class CustomerController {
         }
     }
 
+
+    static async postDeleteCustomer(req, res, next) {
+        logger.info('Deleting an customer')
+        try {
+            const { id } = req.params
+            const errors = validationResult(req)
+            if(!errors.isEmpty()){
+                logger.warn('Validation errors during deletion')
+                res.redirect('/customer/')
+            }
+
+            const existsCustomer = await CustomerModel.existsById(id)
+            if (!existsCustomer) {
+                logger.warn(`Customer with ID ${id} not found`)
+                return res.redirect('/customer/')
+            }
+
+            await CustomerModel.deleteById(id)
+            logger.info(`Customer with ID ${id} successfully deleted`)
+            return res.redirect('/customer/')
+        } catch (error) {
+            logger.error(`Error deleting customer: ${error.message}`)
+            next(error)
+        }
+    }
+
 }
 
 

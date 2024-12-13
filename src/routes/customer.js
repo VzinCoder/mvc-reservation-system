@@ -1,5 +1,5 @@
 const CustomerController = require('../controller/CustomerController')
-const { createCustomerValidator} = require('../validator/customerValidator')
+const { createCustomerValidator,idParamValidation} = require('../validator/customerValidator')
 
 const router = require('express').Router()
 
@@ -16,6 +16,9 @@ router.post('/create',createCustomerValidator(),(req,res,next)=>{
     CustomerController.postCreate(req,res,next)
 })
 
+router.post('/delete/:id',idParamValidation(),(req,res,next) => {
+    CustomerController.postDeleteCustomer(req,res,next)
+})
 
 
 module.exports = router
