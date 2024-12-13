@@ -11,7 +11,7 @@ class EmployeeModel {
         const query = `INSERT INTO employee (id,name,password,cpf,salary) values ($1,$2,$3,$4,$5)`
         const result = await pool.query(query, [id, name, password, cpf, salary])
         if (result.rowCount === 0) {
-            throw new Error(`Failed to create user : ${result.command}`)
+            throw new Error(`Failed to create employee : ${result.command}`)
         }
         return true
     }
