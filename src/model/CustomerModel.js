@@ -1,3 +1,4 @@
+const { pool } = require('../db/conn')
 
 
 class CustomerModel {
@@ -16,6 +17,11 @@ class CustomerModel {
         return true
     }
 
+    static async findByCpf(cpf){
+        const query = `SELECT * FROM customer WHERE cpf = $1`
+        const result = await pool.query(query,[cpf])
+        return result.rows[0] || null
+    }
 }
 
 module.exports = CustomerModel
