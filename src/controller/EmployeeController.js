@@ -53,7 +53,7 @@ class EmployeeController {
             const employeeFound = await EmployeeModel.findByCpf(cpf)
             if (employeeFound) {
                 logger.warn(`Employee with CPF ${cpf} already exists`)
-                req.flash('error', 'User with this CPF already exists. Please use a different CPF.')
+                req.flash('error', 'Employee with this CPF already exists. Please use a different CPF.')
                 return res.redirect('/employee/create')
             }
     
