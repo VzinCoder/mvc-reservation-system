@@ -44,8 +44,8 @@ class EmployeeController {
     
             if (!errors.isEmpty()) {
                 const errorsArr = errors.array()
-                logger.warn(`Validation error: ${error.msg}`)
                 const error = errorsArr[0]
+                logger.warn(`Validation error: ${error.msg}`)
                 req.flash('error', error.msg)
                 return res.redirect('/employee/create')
             }
@@ -69,7 +69,7 @@ class EmployeeController {
     
             await EmployeeModel.create(employee)
             logger.info(`Employee with CPF ${cpf} successfully created`)
-            req.flash('sucess', `User with CPF ${cpf} has been successfully registered.`)
+            req.flash('sucess', `Employee with CPF ${cpf} has been successfully registered.`)
             res.redirect('/employee/create')
         } catch (error) {
             logger.error(`Error creating employee: ${error.message}`)
