@@ -2,3 +2,5 @@
 /package-lock.json
 docker-compose.yml
 .env
+logs/combined.log
+logs/error.log
