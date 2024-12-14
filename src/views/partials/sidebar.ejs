@@ -30,14 +30,21 @@
     <!-- Nav Item - Employee -->
     <li class="nav-item <%= path === 'employee'? 'active': ''-%>">
         <a class="nav-link" href="/employee">
-            <i class="fas fa-fw fa-user-tie"></i>
-            <span>Manage employee</span></a>
+            <i class="fas fa-fw fa-briefcase"></i>
+            <span>Manage employees</span></a>
     </li>
      <!-- Nav Item - Client -->
     <li class="nav-item <%= path === 'customer'? 'active': ''-%>">
         <a class="nav-link" href="/customer">
-            <i class="fas fa-fw fa-user"></i>
-            <span>Manage Customer</span></a>
+            <i class="fas fa-fw fa-users"></i>
+            <span>Manage Customers</span></a>
+    </li>
+
+     <!-- Nav Item - Room -->
+     <li class="nav-item <%= path === 'room'? 'active': ''-%>">
+        <a class="nav-link" href="/room">
+            <i class="fas fa-fw fa-bed"></i>
+            <span>Manage room</span></a>
     </li>
 
     <!-- Divider -->
