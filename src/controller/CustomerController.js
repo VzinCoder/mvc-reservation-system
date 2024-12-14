@@ -17,7 +17,7 @@ class CustomerController {
             })
             res.render('customer/list', { customers: customersDateFormated })
         } catch (error) {
-            logger.error(`Error to fetching customers ${error.message}`)
+            logger.error(`Error to fetching customers:`, error)
             next(error)
         }
     }
@@ -26,8 +26,8 @@ class CustomerController {
         logger.info('Rendering create customer page')
         try {
             res.render('customer/create')
-        } catch (e) {
-            logger.error(`Error rendering create customer page: ${error.message}`)
+        } catch (error) {
+            logger.error(`Error rendering create customer page:`, error)
             next(error)
         }
     }
@@ -59,7 +59,7 @@ class CustomerController {
             req.flash('sucess', `Customer with CPF ${cpf} has been successfully registered.`)
             res.redirect('/customer/create')
         } catch (error) {
-            logger.error(`Error creating customer ${error.message}`)
+            logger.error(`Error creating customer:`, error)
             next(error)
         }
     }
@@ -85,7 +85,7 @@ class CustomerController {
             logger.info(`Customer with ID ${id} successfully deleted`)
             return res.redirect('/customer/')
         } catch (error) {
-            logger.error(`Error deleting customer: ${error.message}`)
+            logger.error(`Error deleting customer:`, error)
             next(error)
         }
     }
@@ -110,7 +110,7 @@ class CustomerController {
             logger.info(`Customer details fetched for ID ${id}`)
             res.render('customer/details', { customer: customerDateFormated })
         } catch (error) {
-            logger.error(`Error fetching customer details: ${error.message}`)
+            logger.error(`Error fetching customer details:`, error)
             next(error)
         }
     }
@@ -140,7 +140,7 @@ class CustomerController {
             logger.info(`Rendering edit page for customer with ID ${id}`)
             res.render(viewPath, { customer })
         } catch (error) {
-            logger.error(`Error rendering edit customer page: ${error.message}`)
+            logger.error(`Error rendering edit customer page:`, error)
             next(error)
         }
     }
@@ -180,7 +180,7 @@ class CustomerController {
             req.flash('sucess', 'The customer has been successfully updated.')
             res.redirect(`/customer/edit/${id}`)
         } catch (error) {
-            logger.error(`Error editing customer: ${error.message}`)
+            logger.error(`Error editing customer:`, error)
             next(error)
         }
     }

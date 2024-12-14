@@ -19,7 +19,7 @@ class EmployeeController {
             })
             res.render('employee/list.ejs', { employees: employeesDateFormated })
         } catch (error) {
-            logger.error(`Error fetching employees: ${error.message}`);
+            logger.error(`Error fetching employees:`,error);
             next(error)
         }
     }
@@ -30,7 +30,7 @@ class EmployeeController {
         try {
             res.render('employee/create.ejs')
         } catch (error) {
-            logger.error(`Error rendering create employee page: ${error.message}`)
+            logger.error(`Error rendering create employee page:`,error)
             next(error)
         }
     }
@@ -72,7 +72,7 @@ class EmployeeController {
             req.flash('sucess', `Employee with CPF ${cpf} has been successfully registered.`)
             res.redirect('/employee/create')
         } catch (error) {
-            logger.error(`Error creating employee: ${error.message}`)
+            logger.error(`Error creating employee:`,error)
             next(error)
         }
     }
@@ -97,7 +97,7 @@ class EmployeeController {
             logger.info(`Employee with ID ${id} successfully deleted`)
             res.redirect('/employee/')
         } catch (error) {
-            logger.error(`Error deleting employee: ${error.message}`)
+            logger.error(`Error deleting employee:`,error)
             next(error)
         }
     }
@@ -124,7 +124,7 @@ class EmployeeController {
             logger.info(`Employee details fetched for ID ${id}`)
             res.render('employee/details', { employee: employeeDateFormated })
         } catch (error) {
-            logger.error(`Error fetching employee details: ${error.message}`)
+            logger.error(`Error fetching employee details:`,error)
             next(error)
         }
     }
@@ -155,7 +155,7 @@ class EmployeeController {
             logger.info(`Rendering edit page for employee with ID ${id}`)
             res.render('employee/edit', { employee })
         } catch (error) {
-            logger.error(`Error rendering edit employee page: ${error.message}`)
+            logger.error(`Error rendering edit employee page:`,error)
             next(error)
         }
     }
@@ -206,7 +206,7 @@ class EmployeeController {
             req.flash('sucess', 'The employee has been successfully updated.')
             return res.redirect(`/employee/edit/${id}`)
         } catch (error) {
-            logger.error(`Error editing employee: ${error.message}`)
+            logger.error(`Error editing employee:`,error)
             next(error)
         }
     }
