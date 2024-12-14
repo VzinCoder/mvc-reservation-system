@@ -8,7 +8,9 @@ const server = express()
 const path = require('path')
 const routerEmployee = require('./routes/employee')
 const routerCustomer = require('./routes/customer')
+const routerRoom = require('./routes/room')
 const { initDb } = require('./db/conn')
+const logger = require('./util/logger')
 
 const PORT = 3000
 const DIR_PUBLIC_FILES = path.join(__dirname, 'public')
@@ -41,6 +43,7 @@ server.use(express.urlencoded({ extended: true }))
 server.use('/public', express.static(DIR_PUBLIC_FILES))
 server.use('/employee', routerEmployee)
 server.use('/customer',routerCustomer)
+server.use('/room',routerRoom)
 
 server.get('/', (req, res) => {
     res.render('index.ejs')
