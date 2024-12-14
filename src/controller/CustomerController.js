@@ -7,8 +7,8 @@ const { v4: uuidv4 } = require('uuid');
 class CustomerController {
 
     static async getCustomers(req, res, next) {
-        logger.info('Fetching all customer')
         try {
+            logger.info('Fetching all customer')
             const customers = await CustomerModel.findAll()
             logger.info(`Found ${customers.length} customers`)
             const customersDateFormated = customers.map((customer) => {
@@ -23,8 +23,8 @@ class CustomerController {
     }
 
     static getPageCreate(req, res, next) {
-        logger.info('Rendering create customer page')
         try {
+            logger.info('Rendering create customer page')
             res.render('customer/create')
         } catch (error) {
             logger.error(`Error rendering create customer page:`, error)
@@ -33,8 +33,8 @@ class CustomerController {
     }
 
     static async postCreate(req, res, next) {
-        logger.info('Creating a new customer')
         try {
+            logger.info('Creating a new customer')
             const errors = validationResult(req)
             const { name, phone, email, cpf } = req.body
 
@@ -66,8 +66,8 @@ class CustomerController {
 
 
     static async postDeleteCustomer(req, res, next) {
-        logger.info('Deleting an customer')
         try {
+            logger.info('Deleting an customer')
             const { id } = req.params
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
@@ -91,8 +91,8 @@ class CustomerController {
     }
 
     static async getPageDetailsCustomer(req, res, next) {
-        logger.info('Fetching customer details')
         try {
+            logger.info('Fetching customer details')
             const { id } = req.params
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
@@ -116,8 +116,8 @@ class CustomerController {
     }
 
     static async getPageEditCustomer(req, res, next) {
-        logger.info('Rendering edit customer page')
         try {
+            logger.info('Rendering edit customer page')
             const { id } = req.params
             const errors = validationResult(req)
             const errorMessage = 'Customer not found to edit'
@@ -146,8 +146,8 @@ class CustomerController {
     }
 
     static async postEditCustomer(req, res, next) {
-        logger.info('Editing an customer')
         try {
+            logger.info('Editing an customer')
             const { id } = req.params
             const { name, cpf, email, phone } = req.body
             const errors = validationResult(req)

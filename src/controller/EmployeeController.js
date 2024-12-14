@@ -9,8 +9,8 @@ class EmployeeController {
 
 
     static async getEmployees(req, res, next) {
-        logger.info('Fetching all employees')
         try {
+            logger.info('Fetching all employees')
             const employees = await EmployeeModel.findAll()
             logger.info(`Found ${employees.length} employees`)
             const employeesDateFormated = employees.map((employee) => {
@@ -26,8 +26,8 @@ class EmployeeController {
 
 
     static async getPageCreateEmployee(req, res, next) {
-        logger.info('Rendering create employee page')
         try {
+            logger.info('Rendering create employee page')
             res.render('employee/create.ejs')
         } catch (error) {
             logger.error(`Error rendering create employee page:`,error)
@@ -36,8 +36,8 @@ class EmployeeController {
     }
 
     static async postCreateEmployee(req, res, next) {
-        logger.info('Creating a new employee')
         try {
+            logger.info('Creating a new employee')
             const { name, password, cpf, salary } = req.body
 
             const errors = validationResult(req)
@@ -78,8 +78,8 @@ class EmployeeController {
     }
 
     static async postDeleteEmployee(req, res, next) {
-        logger.info('Deleting an employee')
         try {
+            logger.info('Deleting an employee')
             const { id } = req.params
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
@@ -104,8 +104,8 @@ class EmployeeController {
 
 
     static async getPageEmployeeDetails(req, res, next) {
-        logger.info('Fetching employee details')
         try {
+            logger.info('Fetching employee details')
             const { id } = req.params
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
@@ -130,8 +130,8 @@ class EmployeeController {
     }
 
     static async getPageEditEmployee(req, res, next) {
-        logger.info('Rendering edit employee page')
         try {
+            logger.info('Rendering edit employee page')
             const { id } = req.params
             const erros = validationResult(req)
             const errorMessage = 'Employee not found to edit'
@@ -161,8 +161,8 @@ class EmployeeController {
     }
 
     static async postEditEmployee(req, res, next) {
-        logger.info('Editing an employee')
         try {
+            logger.info('Editing an employee')
             const { id } = req.params
             const { name, password, cpf, salary } = req.body
             const errors = validationResult(req)
