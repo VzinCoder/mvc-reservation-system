@@ -5,10 +5,11 @@ const { v4: uuidv4 } = require('uuid');
 
 class RoomController {
 
-    static getRooms(req, res, next) {
+    static async getRooms(req, res, next) {
         try {
             logger.info('Fetching all rooms')
-            res.render('room/list', { rooms: [] })
+            const rooms = await RoomModel.findAll()
+            res.render('room/list', { rooms: rooms })
         } catch (error) {
             logger.error('Error fetching rooms:', error)
             next(error)
@@ -55,7 +56,7 @@ class RoomController {
                 room_number: req.body.room_number,
                 room_code: code
             }
-
+            console.log(newRoom)
             await RoomModel.create(newRoom)
             logger.info(`Room with code ${code} successfully created`)
             req.flash('sucess', `room with code ${code} has been successfully registered.`)
@@ -64,6 +65,32 @@ class RoomController {
             logger.error(`Error creating room:`, error)
             next(error)
         }
+    }
+
+    static async postDeleteRoom(req, res, next) {
+        try {
+            logger.info('Deleting an room')
+            const { id } = req.params
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                logger.warn('Validation errors during deletion')
+                return res.redirect('/room/')
+            }
+
+            const room = RoomModel.findById(id)
+            if (!room) {
+                logger.warn(`Room with ID ${id} not found`)
+                return res.redirect('/room/')
+            }
+
+            await RoomModel.deleteById(id)
+            logger.info(`Room with ID ${id} successfully deleted`)
+            return res.redirect('/room/')
+        } catch (error) {
+            logger.error(`Error deleting room:`,error)
+            next(error)
+        }
+
     }
 }
 

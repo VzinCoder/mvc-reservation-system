@@ -1,5 +1,6 @@
 const { body, param } = require('express-validator')
 
+const idParamValidation = () => param('id').isUUID()
 
 const createRoomValidator = () => {
     const daily_rateValidation = body('daily_rate')
@@ -78,5 +79,6 @@ const createRoomValidator = () => {
 
 
 module.exports = {
-    createRoomValidator
+    createRoomValidator,
+    idParamValidation
 }

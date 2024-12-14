@@ -1,0 +1,159 @@
+<%- include('../partials/head',{title:'Room'}) -%>
+    <!-- add styles here -->
+    <link href="/public/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <%- include('../partials/sidebar',{path:'room'}) -%>
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <div id="content">
+                        <%- include('../partials/topbar') -%>
+                            <div class="container-fluid">
+                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                    <h1 class="h3 mb-0 text-gray-800">Room</h1>
+                                </div>
+
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">List Rooms</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%"
+                                                cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Code</th>
+                                                        <th>Status</th>
+                                                        <th>Type</th>
+                                                        <th>Beds</th>
+                                                        <th>Bathrooms</th>
+                                                        <th>Daily rate</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% if(rooms.length===0) {%>
+                                                        <tr>
+                                                            <td colspan="100%" class="text-center">No rooms registered.
+                                                            </td>
+                                                        </tr>
+                                                        <%}%>
+                                                            <% for(room of rooms){ %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%= room.room_code %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= room.status %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= room.type %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= room.beds %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= room.bathrooms %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= room.daily_rate %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="d-flex gap-2  justify-content-around">
+                                                                            <a href="/room/details/<%= room.id %>"
+                                                                                class="btn btn-primary btn-circle">
+                                                                                <i class="fas fa-eye"></i>
+                                                                            </a>
+                                                                            <a href="/room/edit/<%= room.id %>"
+                                                                                class="btn btn-warning btn-circle">
+                                                                                <i class="fas fa-pen"></i>
+                                                                            </a>
+
+                                                                            <!--btn delete-->
+                                                                            <button class="btn btn-danger btn-circle"
+                                                                                data-toggle="modal"
+                                                                                data-target="#deletemodal"
+                                                                                data-room-cod="<%= room.room_cod %>"
+                                                                                data-room-id="<%= room.id %>">
+                                                                                <i class="fas fa-trash"></i>
+                                                                            </button>
+
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <% } %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- btn register room -->
+                                <div>
+                                    <a href="/room/create" class="btn btn-primary btn-icon-split">
+                                        <span class="text">Register Room</span>
+                                    </a>
+                                </div>
+                                <!-- modal -->
+                                <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog"
+                                    aria-labelledby="deletemodalLavel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deletemodalLavel">Are you sure you want to
+                                                    continue?</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="modalBody">
+                                                <!--content here -->
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <form id="formDelete" method="post">
+                                                    <button type="submit" class="btn btn-primary">Continue</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end modal-->
+                            </div>
+                    </div>
+                    <%- include('../partials/footer') -%>
+                </div>
+        </div>
+
+        <%- include('../partials/scripts') -%>
+            <!-- add scritps here -->
+            <!-- Page level plugins -->
+            <script src="/public/vendor/datatables/jquery.dataTables.min.js"></script>
+            <script src="/public/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+            <!-- Page level custom scripts -->
+            <script src="/public/js/demo/datatables-demo.js"></script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const deleteButtons = document.querySelectorAll("button[data-target='#deletemodal']");
+                    const modalBody = document.getElementById('modalBody');
+                    const formDelete = document.getElementById('formDelete')
+
+                    deleteButtons.forEach(button => {
+                        button.addEventListener('click', () => {
+                            const roomCod = button.getAttribute('data-room-cod');
+                            const roomId = button.getAttribute('data-room-id');
+                            formDelete.setAttribute('action', `/room/delete/${roomId}`)
+                            modalBody.textContent = `Are you sure you want to delete the room with code ${roomCod}? This action cannot be undone.`;
+                        });
+                    });
+                });
+            </script>
+    </body>
+    <html>
