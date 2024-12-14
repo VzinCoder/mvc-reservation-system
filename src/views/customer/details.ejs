@@ -1,0 +1,66 @@
+<%- include('../partials/head', { title: 'Details Customer' }) -%>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <%- include('../partials/sidebar', { path: 'customer' }) -%>
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <div id="content">
+                        <%- include('../partials/topbar') -%>
+                            <div class="container-fluid">
+                                <%- include('../partials/btn-back',{page:'/customer'}) -%>
+
+                                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                        <h1 class="h3 mb-0 text-gray-800">Customer Details</h1>
+                                    </div>
+
+
+                                    <!-- Start Table -->
+                                    <div class="card shadow">
+                                        <table class="table table-bordered mb-0">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Name:</th>
+                                                    <td>
+                                                        <%= customer.name %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Phone number:</th>
+                                                    <td>
+                                                        <%= customer.phone %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>CPF:</th>
+                                                    <td>
+                                                        <%= customer.cpf %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Email:</th>
+                                                    <td>
+                                                        <%= customer.email %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Start Date:</th>
+                                                    <td>
+                                                        <%= customer.created_at %>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- End Table -->
+
+
+                            </div>
+                    </div>
+                    <%- include('../partials/footer') -%>
+                </div>
+        </div>
+        <%- include('../partials/scripts') -%>
+    </body>
+
+    </html>

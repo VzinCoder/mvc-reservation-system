@@ -187,7 +187,7 @@ class EmployeeController {
             const employeeFound = await EmployeeModel.findByCpf(cpf)
             if (employeeFound && employeeFound.id != employee.id) {
                 logger.warn(`CPF ${cpf} already in use by another employee`)
-                req.flash('error', 'User with this CPF already exists. Please use a different CPF.')
+                req.flash('error', 'Employee with this CPF already exists. Please use a different CPF.')
                 return res.redirect(`/employee/edit/${id}`)
             }
     

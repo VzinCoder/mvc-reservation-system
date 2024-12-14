@@ -1,0 +1,79 @@
+<%- include('../partials/head', { title: 'Edit Employee' }) -%>
+    <!-- add styles here -->
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <%- include('../partials/sidebar', { path: 'customer' }) -%>
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <div id="content">
+                        <%- include('../partials/topbar') -%>
+                            <div class="container-fluid">
+                                <%- include('../partials/btn-back',{page:'/customer'}) -%>
+
+                                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                        <h1 class="h3 mb-0 text-gray-800">Edit Customer</h1>
+                                    </div>
+
+                                    <!-- Start Form -->
+                                    <div class="card shadow">
+                                        <div class="card-body">
+                                            <form method="POST" action="/customer/edit/<%= customer.id %>">
+                                                <%- include('../partials/alert-flash-message') -%>
+                                                    <!-- Name Field -->
+                                                    <div class="mb-3">
+                                                        <label for="name" class="form-label">Name</label>
+                                                        <input type="text" id="name" name="name" class="form-control"
+                                                            placeholder="Enter customer name"
+                                                            value="<%= customer.name %>" required>
+                                                    </div>
+
+                                                    <!-- Phone Field -->
+                                                    <div class="mb-3">
+                                                        <label for="phone" class="form-label">Phone Number</label>
+                                                        <input type="tel" id="phone" name="phone" class="form-control"
+                                                            placeholder="Enter customer phone number"
+                                                            value="<%= customer.phone %>" required>
+                                                    </div>
+
+                                                     <!-- CPF Field -->
+                                                     <div class="mb-3">
+                                                        <label for="cpf" class="form-label">CPF</label>
+                                                        <input type="text" id="cpf" name="cpf" class="form-control"
+                                                            placeholder="Enter CPF (e.g., 111.111.111-11)"
+                                                            pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
+                                                            value="<%= customer.cpf %>" required>
+                                                    </div>
+            
+                                                    <!-- Email Field -->
+                                                    <div class="mb-3">
+                                                        <label for="email" class="form-label">Email</label>
+                                                        <input type="email" id="email" name="email" class="form-control"
+                                                            placeholder="Enter email" value="<%= customer.email %>"
+                                                            required>
+                                                    </div>
+
+                                                   
+
+                                                    <!-- Submit Button -->
+                                                    <div class="text-center">
+                                                        <button type="submit" class="btn btn-primary">
+                                                            Edit Customer
+                                                        </button>
+                                                    </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- End Form -->
+
+                            </div>
+                    </div>
+                    <%- include('../partials/footer') -%>
+                </div>
+        </div>
+
+        <%- include('../partials/scripts') -%>
+            <!-- add scripts here -->
+    </body>
+
+    </html>

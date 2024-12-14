@@ -70,7 +70,7 @@ class CustomerController {
         try {
             const { id } = req.params
             const errors = validationResult(req)
-            if(!errors.isEmpty()){
+            if (!errors.isEmpty()) {
                 logger.warn('Validation errors during deletion')
                 res.redirect('/customer/')
             }
@@ -86,6 +86,101 @@ class CustomerController {
             return res.redirect('/customer/')
         } catch (error) {
             logger.error(`Error deleting customer: ${error.message}`)
+            next(error)
+        }
+    }
+
+    static async getPageDetailsCustomer(req, res, next) {
+        logger.info('Fetching customer details')
+        try {
+            const { id } = req.params
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                logger.warn('Validation errors when fetching details')
+                return res.redirect('/customer/')
+            }
+
+            const customer = await CustomerModel.findById(id)
+            if (!customer) {
+                logger.warn(`Customer with ID ${id} not found`)
+                return res.redirect('/customer/')
+            }
+            const dateFormated = format(customer.created_at, 'yyyy/MM/dd')
+            const customerDateFormated = { ...customer, created_at: dateFormated }
+            logger.info(`Customer details fetched for ID ${id}`)
+            res.render('customer/details', { customer: customerDateFormated })
+        } catch (error) {
+            logger.error(`Error fetching customer details: ${error.message}`)
+            next(error)
+        }
+    }
+
+    static async getPageEditCustomer(req, res, next) {
+        logger.info('Rendering edit customer page')
+        try {
+            const { id } = req.params
+            const errors = validationResult(req)
+            const errorMessage = 'Customer not found to edit'
+            const viewPath = 'customer/edit'
+            const viewModel = {
+                customer: {},
+                errorMessages: [errorMessage]
+            }
+
+            if (!errors.isEmpty()) {
+                logger.warn('Validation errors when rendering edit page')
+                return res.render(viewPath, viewModel)
+            }
+
+            const customer = await CustomerModel.findById(id)
+            if (!customer) {
+                logger.warn(`Customer with ID ${id} not found for editing`)
+                return res.render(viewPath, viewModel)
+            }
+            logger.info(`Rendering edit page for customer with ID ${id}`)
+            res.render(viewPath, { customer })
+        } catch (error) {
+            logger.error(`Error rendering edit customer page: ${error.message}`)
+            next(error)
+        }
+    }
+
+    static async postEditCustomer(req, res, next) {
+        logger.info('Editing an customer')
+        try {
+            const { id } = req.params
+            const { name, cpf, email, phone } = req.body
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                const errorsArr = errors.array()
+                const error = errorsArr[0]
+                logger.warn(`Validation error: ${error.msg}`)
+                req.flash('error', error.msg)
+                return res.redirect(`/customer/edit/${id}`)
+            }
+
+            const customer = await CustomerModel.findById(id)
+            if (!customer) {
+                logger.warn(`Customer with ID ${id} not found for updating`)
+                return res.redirect(`/customer/edit/${id}`)
+            }
+
+            const customerFound = await CustomerModel.findByCpf(cpf)
+            if (customerFound && customerFound.id !== customer.id) {
+                logger.warn(`CPF ${cpf} already in use by another customer`)
+                req.flash('error', 'Customer with this CPF already exists. Please use a different CPF.')
+                return res.redirect(`/customer/edit/${id}`)
+            }
+
+            // update customer properties
+            Object.assign(customer, { name, email, cpf, phone })
+
+            await CustomerModel.update(customer)
+            logger.info(`Customer with ID ${id} successfully updated`)
+            req.flash('sucess', 'The customer has been successfully updated.')
+            res.redirect(`/customer/edit/${id}`)
+        } catch (error) {
+            logger.error(`Error editing customer: ${error.message}`)
             next(error)
         }
     }

@@ -2,7 +2,7 @@ const { body, param } = require('express-validator')
 
 const idParamValidation = () => param('id').isUUID()
 
-const createCustomerValidator = () => {
+const customerValidator = () => {
     const nameValidation = body('name')
         .isString().withMessage('Name must be a string.')
         .trim()
@@ -26,11 +26,18 @@ const createCustomerValidator = () => {
     return [nameValidation, phoneValidation, cpfValidation, emailValidation]
 }
 
+const createCustomerValidator = () => {
+    return customerValidator()
+}
 
+const editCustomerValidator = () => {
+    return [idParamValidation(),...customerValidator()]
+}
 
 
 
 module.exports = {
     createCustomerValidator,
+    editCustomerValidator,
     idParamValidation
 }

@@ -17,25 +17,40 @@ class CustomerModel {
         return true
     }
 
-    static async findByCpf(cpf){
+    static async findByCpf(cpf) {
         const query = `SELECT * FROM customer WHERE cpf = $1`
-        const result = await pool.query(query,[cpf])
+        const result = await pool.query(query, [cpf])
         return result.rows[0] || null
     }
 
-    static async deleteById(id){
+    static async deleteById(id) {
         const query = `DELETE FROM customer where id = $1`
-        const result = await pool.query(query,[id])
-        if(result.rowCount === 0){
+        const result = await pool.query(query, [id])
+        if (result.rowCount === 0) {
             throw new Error(`Failed to delete customer : ${result.command}`)
         }
         return true
     }
 
-    static async existsById(id){
+    static async existsById(id) {
         const query = "Select * from customer where id = $1"
-        const result = await pool.query(query,[id])
+        const result = await pool.query(query, [id])
         return Boolean(result.rows[0])
+    }
+
+    static async findById(id) {
+        const query = "Select * from customer where id = $1"
+        const result = await pool.query(query, [id])
+        return result.rows[0] || null
+    }
+
+    static async update({ id, name, email, cpf, phone }) {
+        const query = `Update customer SET name = $1, email = $2, cpf = $3, phone = $4 where id = $5`
+        const result = await pool.query(query, [name, email, cpf, phone, id])
+        if(result.rowCount === 0){
+            throw new Error(`Failed to update customer : ${result.command}`)
+        }
+        return true
     }
 }
 
