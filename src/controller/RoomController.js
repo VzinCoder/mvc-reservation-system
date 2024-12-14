@@ -87,10 +87,34 @@ class RoomController {
             logger.info(`Room with ID ${id} successfully deleted`)
             return res.redirect('/room/')
         } catch (error) {
-            logger.error(`Error deleting room:`,error)
+            logger.error(`Error deleting room:`, error)
             next(error)
         }
 
+    }
+
+    static async getPageRoomDetails(req, res, next) {
+        try {
+            logger.info('Fetching room details')
+            const { id } = req.params
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                logger.warn('Validation errors when fetching details')
+                return res.redirect('/room/')
+            }
+
+            const roomFound = await RoomModel.findById(id)
+            if (!roomFound) {
+                logger.warn(`Room with ID ${id} not found`)
+                return res.redirect('/room/')
+            }
+
+            logger.info(`Room details fetched for ID ${id}`)
+            return res.render('room/details', { room: roomFound })
+        } catch (error) {
+            logger.error(`Error fetching room details:`, error)
+            next(error)
+        }
     }
 }
 

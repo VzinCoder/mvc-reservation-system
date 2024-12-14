@@ -19,4 +19,8 @@ router.post('/delete/:id',idParamValidation(),(req,res,next)=> {
     RoomController.postDeleteRoom(req,res,next)
 })
 
+router.get('/details/:id',idParamValidation(),(req,res,next)=> {
+    RoomController.getPageRoomDetails(req,res,next)
+})
+
 module.exports = router

@@ -1,0 +1,82 @@
+<%- include('../partials/head', { title: 'Room Details' }) -%>
+</head>
+
+<body>
+    <div id="wrapper">
+        <%- include('../partials/sidebar', { path: 'room' }) -%>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <%- include('../partials/topbar') -%>
+                <div class="container-fluid">
+                    <%- include('../partials/btn-back', { page: '/room' }) -%>
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Room Details</h1>
+                    </div>
+
+                    <!-- Start Table -->
+                    <div class="card shadow">
+                        <table class="table table-bordered mb-0">
+                            <tbody>
+                                <tr>
+                                    <th>Room Code:</th>
+                                    <td>
+                                        <%= room.room_code %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Daily Rate:</th>
+                                    <td>
+                                        <%= room.daily_rate %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Beds:</th>
+                                    <td>
+                                        <%= room.beds %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Type:</th>
+                                    <td>
+                                        <%= room.type %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Bathrooms:</th>
+                                    <td>
+                                        <%= room.bathrooms %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Status:</th>
+                                    <td>
+                                        <%= room.status %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Floor:</th>
+                                    <td>
+                                        <%= room.floor %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Room Number:</th>
+                                    <td>
+                                        <%= room.room_number %>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- End Table -->
+
+                </div>
+            </div>
+            <%- include('../partials/footer') -%>
+        </div>
+    </div>
+    <%- include('../partials/scripts') -%>
+</body>
+
+</html>
