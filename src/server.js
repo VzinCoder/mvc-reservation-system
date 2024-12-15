@@ -1,4 +1,5 @@
 require('dotenv').config()
+require('./util/envValidator').validateEnvVars()
 
 const session = require('express-session')
 const flash = require('connect-flash')
