@@ -1,0 +1,130 @@
+<%- include('../partials/head', { title: 'Edit Room' }) -%>
+    <!-- add styles here -->
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <%- include('../partials/sidebar', { path: 'room' }) -%>
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <div id="content">
+                        <%- include('../partials/topbar') -%>
+                            <div class="container-fluid">
+                                <%- include('../partials/btn-back', { page: '/room' }) -%>
+
+                                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                        <h1 class="h3 mb-0 text-gray-800">Edit Room</h1>
+                                    </div>
+
+                                    <!-- Start Form -->
+                                    <div class="card shadow">
+                                        <div class="card-body">
+                                            <form method="POST" action="/room/edit/<%= room.id %>">
+
+                                                <%- include('../partials/alert-flash-message') -%>
+
+                                                    <!-- Daily Rate Field -->
+                                                    <div class="mb-3">
+                                                        <label for="daily_rate" class="form-label">Daily Rate</label>
+                                                        <input type="number" id="daily_rate" name="daily_rate"
+                                                            class="form-control" placeholder="Enter daily rate"
+                                                            value="<%= room.daily_rate %>" step="0.01" required>
+                                                    </div>
+
+                                                    <!-- Beds Field -->
+                                                    <div class="mb-3">
+                                                        <label for="beds" class="form-label">Beds</label>
+                                                        <input type="number" id="beds" name="beds" class="form-control"
+                                                            placeholder="Enter number of beds" value="<%= room.beds %>"
+                                                            required>
+                                                    </div>
+
+                                                    <!-- Type Field -->
+                                                    <div class="mb-3">
+                                                        <label for="type" class="form-label">Type</label>
+                                                        <select id="type" name="type" class="form-control" required>
+                                                            <option value="">Select room type</option>
+                                                            <option 
+                                                                value="SINGLE" 
+                                                                <%= room.type === 'SINGLE' ? 'selected' :'' %>
+                                                                >Single</option>
+
+                                                            <option 
+                                                            value="DOUBLE"
+                                                            <%= room.type === 'DOUBLE' ? 'selected' :'' %>
+                                                            >Double</option>
+
+                                                            <option value="FAMILY"
+                                                            <%= room.type === 'FAMILY' ? 'selected' :'' %>
+                                                            >Family</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <!-- Bathrooms Field -->
+                                                    <div class="mb-3">
+                                                        <label for="bathrooms" class="form-label">Bathrooms</label>
+                                                        <input type="number" id="bathrooms" name="bathrooms"
+                                                            class="form-control" placeholder="Enter number of bathrooms"
+                                                            value="<%= room.bathrooms %>" required>
+                                                    </div>
+
+                                                    <!-- Floor Field -->
+                                                    <div class="mb-3">
+                                                        <label for="floor" class="form-label">Floor</label>
+                                                        <input type="number" id="floor" name="floor"
+                                                            class="form-control" placeholder="Enter floor number"
+                                                            value="<%= room.floor %>" required>
+                                                    </div>
+
+                                                    <!-- Room Number Field -->
+                                                    <div class="mb-3">
+                                                        <label for="room_number" class="form-label">Room Number</label>
+                                                        <input type="number" id="room_number" name="room_number"
+                                                            class="form-control" placeholder="Enter room number"
+                                                            value="<%= room.room_number %>" required>
+                                                    </div>
+
+                                                    <!-- Room Code Field (Read-Only) -->
+                                                    <div class="mb-3">
+                                                        <label for="room_code" class="form-label">Room Code</label>
+                                                        <input type="text" id="room_code" name="room_code"
+                                                            class="form-control" placeholder="Auto-generated room code"
+                                                            value="<%= room.room_code %>" readonly>
+                                                    </div>
+
+                                                    <!-- Submit Button -->
+                                                    <div class="text-center">
+                                                        <button type="submit" class="btn btn-primary">
+                                                            Edit Room
+                                                        </button>
+                                                    </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- End Form -->
+
+                            </div>
+                    </div>
+                    <%- include('../partials/footer') -%>
+                </div>
+        </div>
+
+        <%- include('../partials/scripts') -%>
+            <!-- add scripts here -->
+            <script>
+                document.getElementById('floor').addEventListener('input', updateRoomCode)
+                document.getElementById('room_number').addEventListener('input', updateRoomCode)
+
+                function updateRoomCode() {
+                    const floor = document.getElementById('floor').value
+                    const roomNumber = document.getElementById('room_number').value
+
+                    if (floor && roomNumber) {
+                        const floorLetter = String.fromCharCode(64 + parseInt(floor))
+                        const roomCode = `${floorLetter}${roomNumber.padStart(2, '0')}`
+                        document.getElementById('room_code').value = roomCode
+                    }
+                }
+            </script>
+    </body>
+
+    </html>

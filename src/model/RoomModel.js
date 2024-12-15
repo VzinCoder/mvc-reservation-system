@@ -54,7 +54,28 @@ class RoomModel {
         return rows[0] || null
     }
 
+    static async update(room) {
+        const query = `UPDATE room 
+        SET daily_rate = $1, beds = $2, type = $3, bathrooms = $4, floor = $5, 
+        room_number = $6,room_code = $7 WHERE id = $8`
 
+        const values = [
+            room.daily_rate,
+            room.beds,
+            room.type,
+            room.bathrooms,
+            room.floor,
+            room.room_number,
+            room.room_code,
+            room.id
+        ]
+
+        const { rowCount, command } = await pool.query(query, values)
+        if (rowCount === 0) {
+            throw new Error(`Failed to update employee : ${command}`)
+        }
+        return true
+    }
 }
 
 module.exports = RoomModel

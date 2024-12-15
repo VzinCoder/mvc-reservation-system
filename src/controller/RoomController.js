@@ -116,6 +116,86 @@ class RoomController {
             next(error)
         }
     }
+
+
+    static async getPageEditRoom(req, res, next) {
+        try {
+            logger.info('Rendering edit room page')
+            const { id } = req.params
+            const erros = validationResult(req)
+            const errorMessage = 'Room not found to edit'
+            const viewPath = 'room/edit'
+
+            const viewModel = {
+                room: {},
+                errorMessages: [errorMessage]
+            }
+
+            if (!erros.isEmpty()) {
+                logger.warn('Validation errors when rendering edit page')
+                return res.render(viewPath, viewModel)
+            }
+
+            const room = await RoomModel.findById(id)
+            if (!room) {
+                logger.warn(`Room with ID ${id} not found for editing`)
+                return res.render(viewPath, viewModel)
+            }
+            logger.info(`Rendering edit page for room with ID ${id}`)
+            res.render('room/edit', { room })
+        } catch (error) {
+            logger.error(`Error rendering edit room page:`, error)
+            next(error)
+        }
+    }
+
+    static async postEditRoom(req, res, next) {
+        try {
+            logger.info('Editing an room')
+            const { id } = req.params
+            const { room_code: code } = req.body
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                const errorsArr = errors.array()
+                const error = errorsArr[0]
+                logger.warn(`Validation error: ${error.msg}`)
+                req.flash('error', error.msg)
+                return res.redirect(`/room/edit/${id}`)
+            }
+
+            //verify room to update
+            const room = await RoomModel.findById(id)
+            if(!room){
+                logger.warn(`room with ID ${id} not found for updating`)
+                return res.redirect(`/room/edit/${id}`)
+            }
+
+            //Check if someone with this Code already exists.
+            const roomFoundByCode = await RoomModel.findByCode(code)
+            if(roomFoundByCode && roomFoundByCode.id !== id){
+                logger.warn(`Code ${code} already in use by another room`)
+                req.flash('error', 'Room with this code already exists. Please use a different code.')
+                return res.redirect(`/employee/edit/${id}`)
+            }
+
+            //update data
+            room.daily_rate = req.body.daily_rate,
+            room.beds = req.body.beds
+            room.type = req.body.type
+            room.bathrooms = req.body.bathrooms
+            room.floor = req.body.floor
+            room.room_number = req.body.room_number
+            room.room_code =  req.body.room_code
+
+            await RoomModel.update(room)
+            logger.info(`Room with ID ${id} successfully updated`)
+            req.flash('sucess', 'The room has been successfully updated.')
+            res.redirect(`/room/edit/${id}`)
+        } catch (error) {
+            logger.error(`Error editing room:`, error)
+            next(error)
+        }
+    }
 }
 
 

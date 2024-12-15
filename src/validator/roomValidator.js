@@ -2,7 +2,7 @@ const { body, param } = require('express-validator')
 
 const idParamValidation = () => param('id').isUUID()
 
-const createRoomValidator = () => {
+const roomValidator = () => {
     const daily_rateValidation = body('daily_rate')
     .isDecimal({ decimal_digits: '0,2' })
     .withMessage('Daily rate must be a valid decimal value with up to 2 decimal places.')
@@ -72,13 +72,19 @@ const createRoomValidator = () => {
     ]
 }
 
+const createRoomValidator = () => {
+    return [...roomValidator()]
+}
 
+const editRoomValidator = () => {
 
-
+    return [idParamValidation(),...roomValidator()]
+}
 
 
 
 module.exports = {
     createRoomValidator,
-    idParamValidation
+    idParamValidation,
+    editRoomValidator
 }
