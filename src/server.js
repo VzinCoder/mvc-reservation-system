@@ -11,7 +11,9 @@ const routerEmployee = require('./routes/employee')
 const routerCustomer = require('./routes/customer')
 const routerRoom = require('./routes/room')
 const routerAuth = require('./routes/auth')
-const { initDb } = require('./db/conn')
+const routerReserve = require('./routes/reserve')
+const { initDb, pool } = require('./db/conn')
+const logger = require('./util/logger')
 
 const PORT = 3000
 const DIR_PUBLIC_FILES = path.join(__dirname, 'public')
@@ -42,10 +44,30 @@ server.use((req, res, next) => {
 
 server.use(express.urlencoded({ extended: true }))
 server.use('/public', express.static(DIR_PUBLIC_FILES))
+
+server.use(async (req, res, next) => {
+    try {
+        logger.info('add admin to session')
+        if (!req.session.user) {
+            const query = `SELECT * FROM employee where type = 'admin' limit 1`
+            const { rows } = await pool.query(query)
+            if (rows.length <= 0) {
+                throw new Error('Admin not afound!')
+            }
+            req.session.user = rows[0]
+        }
+        next()
+    } catch (error) {
+        logger.error('Error add admin in session',error)
+        next(error)
+    }
+})
+
 server.use('/employee', routerEmployee)
-server.use('/customer',routerCustomer)
-server.use('/room',routerRoom)
-server.use('/auth',routerAuth)
+server.use('/customer', routerCustomer)
+server.use('/room', routerRoom)
+server.use('/auth', routerAuth)
+server.use('/reserve',routerReserve)
 
 server.get('/', (req, res) => {
     res.render('index.ejs')
