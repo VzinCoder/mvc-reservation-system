@@ -2,6 +2,10 @@ const { body, param } = require('express-validator')
 
 const idParamValidation = () => param('id').isUUID()
 
+const cpfParamValidation = () => param('cpf')
+    .isNumeric().withMessage('CPF must be numeric')
+    .isLength({ min: 11, max: 11 }).withMessage('CPF must have exactly 11 digits')
+
 const customerValidator = () => {
     const nameValidation = body('name')
         .isString().withMessage('Name must be a string.')
@@ -31,7 +35,7 @@ const createCustomerValidator = () => {
 }
 
 const editCustomerValidator = () => {
-    return [idParamValidation(),...customerValidator()]
+    return [idParamValidation(), ...customerValidator()]
 }
 
 
@@ -39,5 +43,6 @@ const editCustomerValidator = () => {
 module.exports = {
     createCustomerValidator,
     editCustomerValidator,
-    idParamValidation
+    idParamValidation,
+    cpfParamValidation
 }

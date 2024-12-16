@@ -185,6 +185,33 @@ class CustomerController {
         }
     }
 
+    static async getCustomerByCpfJson(req, res, next) {
+        try {
+            logger.info('Fetching customer by cpf json')
+            const { cpf } = req.params
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                const errArr = errors.array()
+                const msgErr = 'Invalid input'
+                logger.warn('Validation error')
+                return res.status(400).json({ error: msgErr, details: errArr })
+            }
+            const pattern = /(\d{3})(\d{3})(\d{3})(\d{2})/
+            const cpfFormated = cpf.replace(pattern, '$1.$2.$3-$4')
+            const customer = await CustomerModel.findByCpf(cpfFormated)
+            if (!customer) {
+                logger.warn(`Customer with CPF ${cpf} not found`)
+                return res.status(404).json({ error: 'Customer not found' })
+            }
+
+            logger.info(`Customer with CPF ${cpf} found`)
+            return res.json(customer)
+        } catch (error) {
+            logger.error(`Fetching customer by cpf json`, error)
+            next(error)
+        }
+    }
+
 }
 
 

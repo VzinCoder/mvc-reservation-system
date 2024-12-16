@@ -76,6 +76,20 @@ class RoomModel {
         }
         return true
     }
+
+    static async findAvailableRooms({ checkin, checkout }) {
+        const query = `SELECT room.*
+                       FROM room
+                       LEFT JOIN reserve ON room.id = reserve.room_id
+                       AND $2 > reserve.check_in
+                       AND $1 < reserve.check_out
+                       WHERE  reserve.room_id IS NULL;
+                       `
+        const { rows } = await pool.query(query, [checkin, checkout])
+        return rows
+    }
+
+
 }
 
 module.exports = RoomModel

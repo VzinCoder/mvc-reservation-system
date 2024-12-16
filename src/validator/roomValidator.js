@@ -1,15 +1,16 @@
-const { body, param } = require('express-validator')
+const { body, param ,query} = require('express-validator')
 
 const idParamValidation = () => param('id').isUUID()
 
+
 const roomValidator = () => {
     const daily_rateValidation = body('daily_rate')
-    .isDecimal({ decimal_digits: '0,2' })
-    .withMessage('Daily rate must be a valid decimal value with up to 2 decimal places.')
-    .notEmpty()
-    .withMessage('Daily rate is required.')
-    .isFloat({ min: 0.01 })
-    .withMessage('Daily rate must be at least 0.01.')
+        .isDecimal({ decimal_digits: '0,2' })
+        .withMessage('Daily rate must be a valid decimal value with up to 2 decimal places.')
+        .notEmpty()
+        .withMessage('Daily rate is required.')
+        .isFloat({ min: 0.01 })
+        .withMessage('Daily rate must be at least 0.01.')
 
     const bedsValidation = body('beds')
         .isInt({ min: 1 })
@@ -46,7 +47,7 @@ const roomValidator = () => {
 
         const floorLetter = String.fromCharCode(64 + floor)
         const expectedCode = `${floorLetter}${roomNumber.toString().padStart(2, '0')}`
-        
+
         if (value !== expectedCode) {
             throw new Error(
                 `Invalid Room Code. Expected: ${expectedCode}`
@@ -78,13 +79,40 @@ const createRoomValidator = () => {
 
 const editRoomValidator = () => {
 
-    return [idParamValidation(),...roomValidator()]
+    return [idParamValidation(), ...roomValidator()]
 }
 
+const getRoomsAvailableJsonValidator = () => {
+    const checkinValidation = query('checkin')
+        .exists().withMessage('Check-in date is required.')
+        .isISO8601().withMessage('Check-in must be a valid date (YYYY-MM-DD).')
 
+    const checkoutValidation = query('checkout')
+        .exists().withMessage('Check-out date is required.')
+        .isISO8601().withMessage('Check-out must be a valid date (YYYY-MM-DD).')
+        .custom((value, { req }) => {
+            if (new Date(value) <= new Date(req.query.checkin)) {
+                throw new Error('Check-out date must be after check-in date.')
+            }
+            return true
+        })
+
+    const bedsValidation = query('beds')
+        .optional()
+        .isInt({ min: 1 }).withMessage('Number of beds must be at least 1.')
+        .toInt()
+
+    const typeValidation = query('type')
+        .optional()
+        .isIn(['SINGLE', 'DOUBLE', 'FAMILY'])
+        .withMessage('Room type must be "SINGLE", "DOUBLE", or "FAMILY".')
+
+    return [checkinValidation, checkoutValidation, bedsValidation,typeValidation]
+}
 
 module.exports = {
     createRoomValidator,
     idParamValidation,
-    editRoomValidator
+    editRoomValidator,
+    getRoomsAvailableJsonValidator
 }

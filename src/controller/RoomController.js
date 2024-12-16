@@ -165,27 +165,27 @@ class RoomController {
 
             //verify room to update
             const room = await RoomModel.findById(id)
-            if(!room){
+            if (!room) {
                 logger.warn(`room with ID ${id} not found for updating`)
                 return res.redirect(`/room/edit/${id}`)
             }
 
             //Check if someone with this Code already exists.
             const roomFoundByCode = await RoomModel.findByCode(code)
-            if(roomFoundByCode && roomFoundByCode.id !== id){
+            if (roomFoundByCode && roomFoundByCode.id !== id) {
                 logger.warn(`Code ${code} already in use by another room`)
                 req.flash('error', 'Room with this code already exists. Please use a different code.')
                 return res.redirect(`/employee/edit/${id}`)
             }
 
             //update data
-            room.daily_rate = req.body.daily_rate,
+            room.daily_rate = req.body.daily_rate
             room.beds = req.body.beds
             room.type = req.body.type
             room.bathrooms = req.body.bathrooms
             room.floor = req.body.floor
             room.room_number = req.body.room_number
-            room.room_code =  req.body.room_code
+            room.room_code = req.body.room_code
 
             await RoomModel.update(room)
             logger.info(`Room with ID ${id} successfully updated`)
@@ -195,6 +195,39 @@ class RoomController {
             logger.error(`Error editing room:`, error)
             next(error)
         }
+    }
+
+    static async getRoomsAvailableJson(req, res, next) {
+        try {
+            logger.info('Fetching rooms Availables json')
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                const errArr = errors.array()
+                const msgErr = 'Invalid input'
+                logger.warn('Validation error')
+                return res.status(400).json({ error: msgErr, details: errArr })
+            }
+
+            const { checkin, checkout, beds, type } = req.query
+            const interval = { checkin, checkout }
+            const roomsAvailable = await RoomModel.findAvailableRooms(interval)
+            const filter = { beds, type }
+            const roomFiltered = RoomController.filterRooms(filter, roomsAvailable)
+            logger.info('Fetching rooms sucess')
+            res.status(200).json(roomFiltered)
+        } catch (error) {
+            logger.error('Error fetching rooms Availables json')
+            next(error)
+        }
+    }
+
+    static filterRooms(filters, rooms) {
+        return Object.keys(filters).reduce((filteredRooms, key) => {
+            if (!filters[key]) {
+                return filteredRooms
+            }
+            return filteredRooms.filter(room => room[key] === filters[key])
+        }, rooms)
     }
 }
 

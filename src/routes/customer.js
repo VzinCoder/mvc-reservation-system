@@ -1,5 +1,5 @@
 const CustomerController = require('../controller/CustomerController')
-const { createCustomerValidator, idParamValidation, editCustomerValidator } = require('../validator/customerValidator')
+const { createCustomerValidator, idParamValidation, editCustomerValidator, cpfParamValidation } = require('../validator/customerValidator')
 
 const router = require('express').Router()
 
@@ -32,5 +32,8 @@ router.post('/edit/:id', editCustomerValidator(), (req, res, next) => {
     CustomerController.postEditCustomer(req, res, next)
 })
 
+router.get('/json/:cpf', cpfParamValidation(), (req, res, next) => {
+    CustomerController.getCustomerByCpfJson(req, res, next)
+})
 
 module.exports = router
