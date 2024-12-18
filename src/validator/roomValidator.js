@@ -1,4 +1,10 @@
-const { body, param ,query} = require('express-validator')
+const { body, param, query } = require('express-validator')
+
+const ROOM_TYPES = {
+    SINGLE: { beds: 1 },
+    DOUBLE: { beds: 2 },
+    FAMILY: { beds: 3 }, 
+}
 
 const idParamValidation = () => param('id').isUUID()
 
@@ -12,21 +18,34 @@ const roomValidator = () => {
         .isFloat({ min: 0.01 })
         .withMessage('Daily rate must be at least 0.01.')
 
+    const typeValidation = body('type')
+        .isIn(Object.keys(ROOM_TYPES))
+        .withMessage('Invalid room type.');
+
     const bedsValidation = body('beds')
-        .isInt({ min: 1 })
-        .withMessage('Beds must be a positive integer.')
         .notEmpty()
         .withMessage('Beds field is required.')
+        .bail() 
+        .isInt({ min: 1 })
+        .withMessage('Beds must be a positive integer.')
+        .bail()
+        .custom((value, { req }) => {
+            const valueConverted = Number(value)
+            const roomType = req.body.type;
+            if (!ROOM_TYPES[roomType]) {
+                throw new Error('Invalid room type.');
+            }
+            const { beds } = ROOM_TYPES[roomType]
+            
+            if (roomType === 'FAMILY' && valueConverted < beds) {
+                throw new Error('Family rooms require at least 3 beds.')
+            } else if (roomType !== 'FAMILY' && valueConverted !== beds) {
+                console.log(valueConverted,beds,roomType)
+                throw new Error(`Rooms of type ${roomType} must have exactly ${beds} bed(s).`)
+            }
 
-    const typeValidation = body('type')
-        .isIn(['SINGLE', 'DOUBLE', 'FAMILY'])
-        .withMessage('Invalid room type.')
-
-    const bathroomsValidation = body('bathrooms')
-        .isInt({ min: 0 })
-        .withMessage('Bathrooms must be a non-negative integer.')
-        .notEmpty()
-        .withMessage('Bathrooms field is required.')
+            return true
+        })
 
     const floorValidation = body('floor')
         .isInt({ min: 1, max: 26 })
@@ -66,7 +85,6 @@ const roomValidator = () => {
         daily_rateValidation,
         bedsValidation,
         typeValidation,
-        bathroomsValidation,
         floorValidation,
         room_numberValidation,
         room_codeValidation
@@ -107,7 +125,7 @@ const getRoomsAvailableJsonValidator = () => {
         .isIn(['SINGLE', 'DOUBLE', 'FAMILY'])
         .withMessage('Room type must be "SINGLE", "DOUBLE", or "FAMILY".')
 
-    return [checkinValidation, checkoutValidation, bedsValidation,typeValidation]
+    return [checkinValidation, checkoutValidation, bedsValidation, typeValidation]
 }
 
 module.exports = {

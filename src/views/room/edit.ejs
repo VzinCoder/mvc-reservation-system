@@ -30,13 +30,7 @@
                                                             value="<%= room.daily_rate %>" step="0.01" required>
                                                     </div>
 
-                                                    <!-- Beds Field -->
-                                                    <div class="mb-3">
-                                                        <label for="beds" class="form-label">Beds</label>
-                                                        <input type="number" id="beds" name="beds" class="form-control"
-                                                            placeholder="Enter number of beds" value="<%= room.beds %>"
-                                                            required>
-                                                    </div>
+                                                   
 
                                                     <!-- Type Field -->
                                                     <div class="mb-3">
@@ -59,12 +53,12 @@
                                                         </select>
                                                     </div>
 
-                                                    <!-- Bathrooms Field -->
-                                                    <div class="mb-3">
-                                                        <label for="bathrooms" class="form-label">Bathrooms</label>
-                                                        <input type="number" id="bathrooms" name="bathrooms"
-                                                            class="form-control" placeholder="Enter number of bathrooms"
-                                                            value="<%= room.bathrooms %>" required>
+                                                     <!-- Beds Field -->
+                                                     <div class="mb-3">
+                                                        <label for="beds" class="form-label">Beds</label>
+                                                        <input type="number" id="beds" name="beds" class="form-control"
+                                                            placeholder="Enter number of beds" value="<%= room.beds %>"
+                                                            required>
                                                     </div>
 
                                                     <!-- Floor Field -->
@@ -109,6 +103,7 @@
         </div>
 
         <%- include('../partials/scripts') -%>
+        <script src="/public/js/room-type-change.js"></script>
             <!-- add scripts here -->
             <script>
                 document.getElementById('floor').addEventListener('input', updateRoomCode)
@@ -124,6 +119,11 @@
                         document.getElementById('room_code').value = roomCode
                     }
                 }
+
+                //set event type change
+                const roomTypeElement = document.getElementById('type')
+                const bedsElement = document.getElementById('beds')
+                addRoomTypeChange(roomTypeElement,bedsElement)
             </script>
     </body>
 

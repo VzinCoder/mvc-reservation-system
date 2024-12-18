@@ -10,16 +10,15 @@ class RoomModel {
 
     static async create(room) {
         const query = `INSERT INTO room 
-        (id, daily_rate, beds, type, bathrooms, floor, room_number, room_code)
+        (id, daily_rate, beds, type, floor, room_number, room_code)
         VALUES 
-        ($1, $2, $3, $4, $5, $6, $7, $8)`
+        ($1, $2, $3, $4, $5, $6, $7)`
 
         const values = [
             room.id,
             room.daily_rate,
             room.beds,
             room.type,
-            room.bathrooms,
             room.floor,
             room.room_number,
             room.room_code
@@ -56,14 +55,13 @@ class RoomModel {
 
     static async update(room) {
         const query = `UPDATE room 
-        SET daily_rate = $1, beds = $2, type = $3, bathrooms = $4, floor = $5, 
-        room_number = $6,room_code = $7 WHERE id = $8`
+        SET daily_rate = $1, beds = $2, type = $3, floor = $4, 
+        room_number = $5,room_code = $6 WHERE id = $7`
 
         const values = [
             room.daily_rate,
             room.beds,
             room.type,
-            room.bathrooms,
             room.floor,
             room.room_number,
             room.room_code,

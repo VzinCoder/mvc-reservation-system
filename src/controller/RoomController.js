@@ -51,12 +51,11 @@ class RoomController {
                 beds: req.body.beds,
                 daily_rate: req.body.daily_rate,
                 type: req.body.type,
-                bathrooms: req.body.bathrooms,
                 floor: req.body.floor,
                 room_number: req.body.room_number,
                 room_code: code
             }
-            console.log(newRoom)
+
             await RoomModel.create(newRoom)
             logger.info(`Room with code ${code} successfully created`)
             req.flash('sucess', `room with code ${code} has been successfully registered.`)
@@ -182,7 +181,6 @@ class RoomController {
             room.daily_rate = req.body.daily_rate
             room.beds = req.body.beds
             room.type = req.body.type
-            room.bathrooms = req.body.bathrooms
             room.floor = req.body.floor
             room.room_number = req.body.room_number
             room.room_code = req.body.room_code

@@ -30,13 +30,6 @@
                                                             step="0.01" required>
                                                     </div>
 
-                                                    <!-- Beds Field -->
-                                                    <div class="mb-3">
-                                                        <label for="beds" class="form-label">Beds</label>
-                                                        <input type="number" id="beds" name="beds" class="form-control"
-                                                            placeholder="Enter number of beds" required>
-                                                    </div>
-
                                                     <!-- Type Field -->
                                                     <div class="mb-3">
                                                         <label for="type" class="form-label">Type</label>
@@ -48,13 +41,23 @@
                                                         </select>
                                                     </div>
 
-                                                    <!-- Bathrooms Field -->
+                                                    <!-- Beds Field -->
+                                                    <div class="mb-3">
+                                                        <label for="beds" class="form-label">Beds</label>
+                                                        <input type="number" id="beds" name="beds" class="form-control"
+                                                            placeholder="Enter number of beds" disabled required>
+                                                    </div>
+
+
+                                                    <!-- Bathrooms 
                                                     <div class="mb-3">
                                                         <label for="bathrooms" class="form-label">Bathrooms</label>
                                                         <input type="number" id="bathrooms" name="bathrooms"
                                                             class="form-control" placeholder="Enter number of bathrooms"
                                                             required>
                                                     </div>
+                                                    Field -->
+                                                    
 
                                                     <!-- Floor Field -->
                                                     <div class="mb-3">
@@ -98,21 +101,28 @@
         </div>
 
         <%- include('../partials/scripts') -%>
+        <script src="/public/js/room-type-change.js"></script>
             <!-- add scripts here -->
             <script>
                 document.getElementById('floor').addEventListener('input', updateRoomCode)
                 document.getElementById('room_number').addEventListener('input', updateRoomCode)
-            
+
                 function updateRoomCode() {
                     const floor = document.getElementById('floor').value
                     const roomNumber = document.getElementById('room_number').value
-            
+
                     if (floor && roomNumber) {
-                        const floorLetter = String.fromCharCode(64 + parseInt(floor)) 
+                        const floorLetter = String.fromCharCode(64 + parseInt(floor))
                         const roomCode = `${floorLetter}${roomNumber.padStart(2, '0')}`
                         document.getElementById('room_code').value = roomCode
                     }
                 }
+
+
+                //set event type change
+                const roomTypeElement = document.getElementById('type')
+                const bedsElement = document.getElementById('beds')
+                addRoomTypeChange(roomTypeElement,bedsElement)
             </script>
     </body>
 
