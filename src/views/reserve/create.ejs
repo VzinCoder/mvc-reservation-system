@@ -93,7 +93,8 @@
                                                         <div class="col-md-12">
                                                             <label for="beds" class="form-label">Number of Beds</label>
                                                             <input type="number" id="beds" name="beds"
-                                                                class="form-control" placeholder="Enter number of beds">
+                                                                class="form-control" placeholder="Enter number of beds"
+                                                                disabled>
                                                         </div>
                                                     </div>
 
@@ -252,7 +253,7 @@
                     try {
                         const response = await fetch(url)
                         const rooms = await response.json()
-                        
+
 
                         const roomSelect = document.getElementById('available-rooms')
                         roomSelect.innerHTML = '<option value="">Select a Room</option>'
@@ -278,8 +279,41 @@
                     }
                 }
 
+                const handleToggleTypesRoom = ({ target }) => {
+                    const ROOM_TYPES = {
+                        SINGLE: 1,
+                        DOUBLE: 2,
+                        FAMILY: 3,
+                    }
+
+                    const type = target.value
+                    const value = ROOM_TYPES[type]
+
+                    if(!value){
+                        beds.value = ""
+                        bedsElement.disabled = true
+                        return
+                    }
+
+                    const setInputState = (input, { disabled, value, min }) => {
+                        input.disabled = disabled
+                        input.value = value
+                        if (min !== undefined) {
+                            input.min = min
+                        }
+                    }
+
+                    if (value !== ROOM_TYPES.FAMILY) {
+                        setInputState(bedsElement, { disabled: true, value })
+                        return
+                    }
+                    setInputState(bedsElement, { disabled: false, value, min: value })
+
+                }
+
                 searchCustomerElement.addEventListener('click', handleSearchCustomerClick)
                 roomTypeElement.addEventListener('change', handleFilterChange)
+                roomTypeElement.addEventListener('change', handleToggleTypesRoom)
                 bedsElement.addEventListener('input', handleFilterChange)
                 checkinDateElement.addEventListener('input', handleFilterChange)
                 checkoutDateElement.addEventListener('input', handleFilterChange)
