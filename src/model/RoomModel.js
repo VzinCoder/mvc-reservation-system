@@ -87,6 +87,17 @@ class RoomModel {
         return rows
     }
 
+    static async isAvailableRoomBy({ id, checkin, checkout }) {
+        const query = `SELECT * from reserve 
+                       WHERE id =$1 
+                       AND $2 > reserve.check_in
+                       AND $3 < reserve.check_out
+                        `
+
+        const { rows } = await pool.query(query, [id, checkout, checkin])
+        return rows.length <= 0
+    }
+
 
 }
 
