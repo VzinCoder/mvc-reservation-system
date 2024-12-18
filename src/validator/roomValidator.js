@@ -1,9 +1,10 @@
 const { body, param, query } = require('express-validator')
+const {validDateReserve} = require('../util/validDateReserve')
 
 const ROOM_TYPES = {
     SINGLE: { beds: 1 },
     DOUBLE: { beds: 2 },
-    FAMILY: { beds: 3 }, 
+    FAMILY: { beds: 3 },
 }
 
 const idParamValidation = () => param('id').isUUID()
@@ -25,7 +26,7 @@ const roomValidator = () => {
     const bedsValidation = body('beds')
         .notEmpty()
         .withMessage('Beds field is required.')
-        .bail() 
+        .bail()
         .isInt({ min: 1 })
         .withMessage('Beds must be a positive integer.')
         .bail()
@@ -36,11 +37,11 @@ const roomValidator = () => {
                 throw new Error('Invalid room type.');
             }
             const { beds } = ROOM_TYPES[roomType]
-            
+
             if (roomType === 'FAMILY' && valueConverted < beds) {
                 throw new Error('Family rooms require at least 3 beds.')
             } else if (roomType !== 'FAMILY' && valueConverted !== beds) {
-                console.log(valueConverted,beds,roomType)
+                console.log(valueConverted, beds, roomType)
                 throw new Error(`Rooms of type ${roomType} must have exactly ${beds} bed(s).`)
             }
 
@@ -108,11 +109,15 @@ const getRoomsAvailableJsonValidator = () => {
     const checkoutValidation = query('checkout')
         .exists().withMessage('Check-out date is required.')
         .isISO8601().withMessage('Check-out must be a valid date (YYYY-MM-DD).')
-        .custom((value, { req }) => {
-            if (new Date(value) <= new Date(req.query.checkin)) {
-                throw new Error('Check-out date must be after check-in date.')
-            }
-            return true
+        .bail()
+        .if((_, { req }) => {
+            const { checkin } = req.query
+            return checkin && /^\d{4}-\d{2}-\d{2}$/.test(checkin)
+        })
+        .custom((checkoutDate, { req }) => {
+            const checkout = checkoutDate
+            const checkin = req.query.checkin
+           return validDateReserve({checkin,checkout})
         })
 
     const bedsValidation = query('beds')
