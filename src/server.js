@@ -88,6 +88,6 @@ server.use((err, req, res, next) => {
 
 initDb().then(() => {
     server.listen(PORT, () => {
-        console.log(`Server on Port:${PORT}`)
+        logger.info(`Server on Port:${PORT}`)
     })
 })
