@@ -3,7 +3,7 @@ const { validationResult } = require("express-validator")
 const RoomModel = require("../model/RoomModel")
 const CustomerModel = require("../model/CustomerModel")
 const ReserveModel = require("../model/ReserveModel")
-const { parseISO, startOfDay, differenceInDays } = require('date-fns')
+const { parseISO, startOfDay, differenceInDays, format } = require('date-fns')
 const { v4: uuidv4 } = require('uuid')
 
 
@@ -18,7 +18,13 @@ class ReserveController {
     static async getReserves(req, res, next) {
         try {
             logger.info('Fetching all reserves')
-            const reserves = await ReserveModel.findAll()
+            const reserves = (await ReserveModel.findAll()).map(r => {
+                return {
+                    ...r,
+                    check_in: format(r.check_in,'yyyy/MM/dd'),
+                    check_out: format(r.check_out,'yyyy/MM/dd')
+                }
+            })
             res.render('reserve/list', { reserves })
         } catch (error) {
             logger.error('Error fetching reserves:', error)
@@ -144,6 +150,11 @@ class ReserveController {
             return res.redirect('/reserve')
         }
 
+        if (reserveFound.status != ReserveController.STATUS_RESERVE.CONFIRMED) {
+            logger.warn(`this reservation has already been finalized!`)
+            return res.redirect('/reserve')
+        }
+
         const statusCanceled = ReserveController.STATUS_RESERVE.FINALIZED
         await ReserveModel.changeStatusById({ id, status: statusCanceled })
         logger.info(`Reservation with ID ${id} finalized successfully`)
@@ -169,6 +180,11 @@ class ReserveController {
         const reserveFound = await ReserveModel.findById(id)
         if (!reserveFound) {
             logger.warn(`Reserve with ID ${id} not found`)
+            return res.redirect('/reserve')
+        }
+
+        if (reserveFound.status != ReserveController.STATUS_RESERVE.CONFIRMED) {
+            logger.warn(`this reservation has already been finalized!`)
             return res.redirect('/reserve')
         }
 
