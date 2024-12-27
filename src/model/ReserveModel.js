@@ -1,5 +1,5 @@
 const { pool } = require('../db/conn')
-
+const {startOfYear,endOfYear} = require("date-fns")
 class ReserveModel {
 
 
@@ -39,8 +39,8 @@ class ReserveModel {
         INNER JOIN employee ep ON re.employee_id = ep.id
         WHERE re.id = $1
         `
-        const { rows } = await pool.query(query,[id])
-        return rows[0] ? {...rows[0].reserve_json} : null
+        const { rows } = await pool.query(query, [id])
+        return rows[0] ? { ...rows[0].reserve_json } : null
     }
 
 
@@ -68,13 +68,22 @@ class ReserveModel {
     }
 
 
-    static async changeStatusById({status,id}){
+    static async changeStatusById({ status, id }) {
         const query = `Update reserve set status = $1 where id = $2`
-        const {rowCount} = await pool.query(query,[status,id])
+        const { rowCount } = await pool.query(query, [status, id])
         if (rowCount === 0) {
             throw new Error(`Failed to change status reserve : ${command}`)
         }
         return true
+    }
+
+    static async findAllReservesYear() {
+        const query = `SELECT * from reserve where created_at >= $1 AND created_at <= $2`
+        const now = new Date();
+        const initialDate = startOfYear(now)
+        const finalDate = endOfYear(now)
+        const { rows } = await pool.query(query, [initialDate,finalDate])
+        return rows
     }
 
 }
