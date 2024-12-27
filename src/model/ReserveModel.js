@@ -78,7 +78,9 @@ class ReserveModel {
     }
 
     static async findAllReservesYear() {
-        const query = `SELECT * from reserve where created_at >= $1 AND created_at <= $2`
+        const query = `SELECT reserve.*,room.type as room_type from reserve 
+        inner join room on reserve.room_id = room.id 
+        where created_at >= $1 AND created_at <= $2`
         const now = new Date();
         const initialDate = startOfYear(now)
         const finalDate = endOfYear(now)
