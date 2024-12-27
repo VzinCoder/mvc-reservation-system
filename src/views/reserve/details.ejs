@@ -1,0 +1,143 @@
+<%- include('../partials/head', { title: 'Reserve Details' }) -%>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <%- include('../partials/sidebar', { path: 'reserve' }) -%>
+                <div id="content-wrapper" class="d-flex flex-column">
+                    <div id="content">
+                        <%- include('../partials/topbar') -%>
+                            <div class="container-fluid">
+                                <%- include('../partials/btn-back', { page: '/reserve' }) -%>
+
+                                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                        <h1 class="h3 mb-0 text-gray-800">Reserve Details</h1>
+                                    </div>
+
+                                    <%- include('../partials/alert-flash-message') -%>
+
+                                    <!-- Customer Information Card -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">Customer Information</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>Name:</strong>
+                                                        <%= reserve.customer.name %>
+                                                    </p>
+                                                    <p><strong>CPF:</strong>
+                                                        <%= reserve.customer.cpf %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Employee Information Card -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">Responsible Employee
+                                                Information</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>Name:</strong>
+                                                        <%= reserve.employee.name %>
+                                                    </p>
+                                                    <p><strong>CPF:</strong>
+                                                        <%= reserve.employee.cpf %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Room Information Card -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">Room Details</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>Room Number:</strong>
+                                                        <%= reserve.room.code %>
+                                                    </p>
+                                                    <p><strong>Room Type:</strong>
+                                                        <%= reserve.room.type %>
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><strong>Daily Rate:</strong>
+                                                        <%= reserve.room.daily_rate %>
+                                                    </p>
+                                                    <p><strong>Beds:</strong>
+                                                        <%= reserve.room.beds %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Reservation Information Card -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">Reservation Details</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p><strong>Check-in:</strong>
+                                                        <%= reserve.check_in %>
+                                                    </p>
+                                                    <p><strong>Check-out:</strong>
+                                                        <%= reserve.check_out %>
+                                                    </p>
+                                                    <p><strong>Status:</strong>
+                                                        <%= reserve.status %>
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p><strong>Created Date:</strong>
+                                                        <%= reserve.created_at %>
+                                                    </p>
+                                                    <p><strong>Total Price:</strong>
+                                                        <%= reserve.total %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Action Buttons -->
+                                    <%if(reserve.status==='CONFIRMED' ) {%>
+                                        <div class="d-flex justify-content-between mt-4">
+                                            <form method="post" action="/reserve/finalize/<%= reserve.id %>">
+                                                <input type="hidden" name="path" value="/reserve/details">
+                                                <button
+                                                    class="btn btn-success btn-lg">
+                                                    <i class="fas fa-check-circle"></i> Finalize Reservation
+                                                </button>
+                                            </form>
+                                            <form  method="post" action="/reserve/cancel/<%= reserve.id %>">
+                                                <input type="hidden" name="path" value="/reserve/details">
+                                                <button 
+                                                    class="btn btn-danger btn-lg">
+                                                    <i class="fas fa-times-circle"></i> Cancel Reservation
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <%}%>
+                            </div>
+                    </div>
+                    <%- include('../partials/footer') -%>
+                </div>
+        </div>
+        <%- include('../partials/scripts') -%>
+    </body>
+
+    </html>

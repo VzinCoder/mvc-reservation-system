@@ -1,0 +1,108 @@
+<%- include('../partials/head',{title:'Reserve'}) -%>
+<!-- add styles here -->
+<link href="/public/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="wrapper">
+        <%- include('../partials/sidebar',{path:'reserve'}) -%>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <%- include('../partials/topbar') -%>
+                <div class="container-fluid">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Reserve</h1>
+                    </div>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">List Reserves</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Customer</th>
+                                            <th>CPF</th>
+                                            <th>Room</th>
+                                            <th>Check-in</th>
+                                            <th>Check-out</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% if(reserves.length === 0) { %>
+                                            <tr>
+                                                <td colspan="7" class="text-center">No reserves registered.</td>
+                                            </tr>
+                                        <% } %>
+                                        <% for(reserve of reserves) { %>
+                                            <tr>
+                                                <td><%= reserve.customer.name %></td>
+                                                <td><%= reserve.customer.cpf %></td>
+                                                <td><%= reserve.room.code %></td>
+                                                <td><%= reserve.check_in %></td>
+                                                <td><%= reserve.check_out %></td>
+                                                <td><%= reserve.status %></td>
+                                                <td>
+                                                    <div class="d-flex gap-2 justify-content-around">
+                                                        <!-- View details -->
+                                                        <a href="/reserve/details/<%= reserve.id %>" class="btn btn-primary btn-circle">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+
+                                                        <!-- Dropdown for actions -->
+                                                         <%if(reserve.status === 'CONFIRMED'){%>
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-secondary btn-circle dropdown-toggle" type="button" id="actionMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-cogs"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="actionMenuButton">
+                                                                <form method="post" action="/reserve/finalize/<%= reserve.id %>">
+                                                                    <input type="hidden" name="path" value="/reserve/">
+                                                                    <button type="submit" class="dropdown-item">
+                                                                        <i class="fas fa-check-circle"></i> Finalize
+                                                                    </button>
+                                                                </form>
+                                                                
+                                                                <form method="post" action="/reserve/cancel/<%= reserve.id %>">
+                                                                    <input type="hidden" name="path" value="/reserve/">
+                                                                    <button type="submit" class="dropdown-item">
+                                                                        <i class="fas fa-times-circle"></i> Cancel
+                                                                    </button>
+                                                                </form>
+
+                                                            </div>
+                                                        </div>
+                                                        <%}%>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- btn register room -->
+                    <div>
+                        <a href="/reserve/create" class="btn btn-primary btn-icon-split">
+                            <span class="text">Register Reserve</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <%- include('../partials/footer') -%>
+        </div>
+    </div>
+
+    <%- include('../partials/scripts') -%>
+    <!-- add scripts here -->
+    <script src="/public/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/public/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="/public/js/demo/datatables-demo.js"></script>
+</body>
+</html>

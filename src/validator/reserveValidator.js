@@ -1,5 +1,9 @@
-const { body} = require('express-validator')
+const { body, param } = require('express-validator')
 const { validDateReserve } = require('../util/validDateReserve')
+
+const idParamValidation = () => param('id').isUUID()
+
+const pathValidation = () => body('path').notEmpty().isIn(['/reserve/','/reserve/details'])
 
 const createReserveValidator = () => {
     const roomIdValidation = body('room_id').isUUID()
@@ -27,7 +31,7 @@ const createReserveValidator = () => {
         .custom((checkoutDate, { req }) => {
             const checkout = checkoutDate
             const checkin = req.body.checkin_date
-            return validDateReserve({checkin,checkout})
+            return validDateReserve({ checkin, checkout })
         })
 
     return [roomIdValidation, customerIdValidation, checkinValidation, checkoutValidation]
@@ -35,11 +39,18 @@ const createReserveValidator = () => {
 
 
 
+const finalizeValidator = () => {
+    return [idParamValidation(),pathValidation()]
+}
 
-
-
+const cancelValidator = () => {
+    return [idParamValidation(),pathValidation()]
+}
 
 
 module.exports = {
-    createReserveValidator
+    createReserveValidator,
+    idParamValidation,
+    finalizeValidator,
+    cancelValidator
 }

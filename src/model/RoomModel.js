@@ -81,6 +81,7 @@ class RoomModel {
                        LEFT JOIN reserve ON room.id = reserve.room_id
                        AND $2 > reserve.check_in
                        AND $1 < reserve.check_out
+                       AND reserve.status = 'CONFIRMED'
                        WHERE  reserve.room_id IS NULL;
                        `
         const { rows } = await pool.query(query, [checkin, checkout])

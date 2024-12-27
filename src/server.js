@@ -47,13 +47,13 @@ server.use('/public', express.static(DIR_PUBLIC_FILES))
 
 server.use(async (req, res, next) => {
     try {
-        logger.info('add admin to session')
         if (!req.session.user) {
             const query = `SELECT * FROM employee where type = 'admin' limit 1`
             const { rows } = await pool.query(query)
             if (rows.length <= 0) {
                 throw new Error('Admin not afound!')
             }
+            logger.info('add admin to session')
             req.session.user = rows[0]
         }
         next()

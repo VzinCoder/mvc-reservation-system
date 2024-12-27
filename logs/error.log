@@ -1,2 +1,149 @@
 
 
+2024-12-15 16:32:18 [ERROR]: Error add admin in session invalid input value for enum type_employee: "admind"
+--- STACK TRACE ---
+error: invalid input value for enum type_employee: "admind"
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\server.js:51:30
+-------------------
+2024-12-15 16:32:19 [ERROR]: Error add admin in session invalid input value for enum type_employee: "admind"
+--- STACK TRACE ---
+error: invalid input value for enum type_employee: "admind"
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\server.js:51:30
+-------------------
+2024-12-15 16:32:19 [ERROR]: Error add admin in session invalid input value for enum type_employee: "admind"
+--- STACK TRACE ---
+error: invalid input value for enum type_employee: "admind"
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\server.js:51:30
+-------------------
+2024-12-15 16:32:19 [ERROR]: Error add admin in session invalid input value for enum type_employee: "admind"
+--- STACK TRACE ---
+error: invalid input value for enum type_employee: "admind"
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\server.js:51:30
+-------------------
+2024-12-15 16:32:19 [ERROR]: Error add admin in session invalid input value for enum type_employee: "admind"
+--- STACK TRACE ---
+error: invalid input value for enum type_employee: "admind"
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\server.js:51:30
+-------------------
+2024-12-15 16:32:19 [ERROR]: Error add admin in session invalid input value for enum type_employee: "admind"
+--- STACK TRACE ---
+error: invalid input value for enum type_employee: "admind"
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\server.js:51:30
+-------------------
+2024-12-15 16:32:19 [ERROR]: Error add admin in session invalid input value for enum type_employee: "admind"
+--- STACK TRACE ---
+error: invalid input value for enum type_employee: "admind"
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\server.js:51:30
+-------------------
+2024-12-15 16:32:19 [ERROR]: Error add admin in session invalid input value for enum type_employee: "admind"
+--- STACK TRACE ---
+error: invalid input value for enum type_employee: "admind"
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\server.js:51:30
+-------------------
+2024-12-15 16:32:19 [ERROR]: Error add admin in session invalid input value for enum type_employee: "admind"
+--- STACK TRACE ---
+error: invalid input value for enum type_employee: "admind"
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\server.js:51:30
+-------------------
+2024-12-16 16:39:22 [ERROR]: Error fetching rooms Availables json
+2024-12-16 16:46:46 [ERROR]: Error fetching rooms Availables json
+2024-12-18 10:57:10 [ERROR]: Error to create reserve validationResult is not defined
+--- STACK TRACE ---
+ReferenceError: validationResult is not defined
+    at ReserveController.postCreateReserve (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:20:28)
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\routes\reserve.js:11:23
+    at Layer.handle [as handle_request] (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\express\lib\router\route.js:149:13)
+    at middleware (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\express-validator\lib\middlewares\check.js:16:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+-------------------
+2024-12-18 14:31:05 [ERROR]: Error to create reserve startOfDay is not defined
+--- STACK TRACE ---
+ReferenceError: startOfDay is not defined
+    at ReserveController.postCreateReserve (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:60:35)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+-------------------
+2024-12-18 14:51:05 [ERROR]: Error to create reserve Cannot read properties of undefined (reading 'id')
+--- STACK TRACE ---
+TypeError: Cannot read properties of undefined (reading 'id')
+    at ReserveController.postCreateReserve (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:67:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+-------------------
+2024-12-18 14:52:07 [ERROR]: Error to create reserve Cannot read properties of undefined (reading 'id')
+--- STACK TRACE ---
+TypeError: Cannot read properties of undefined (reading 'id')
+    at ReserveController.postCreateReserve (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:70:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+-------------------
+2024-12-18 14:53:03 [ERROR]: Error to create reserve Cannot read properties of undefined (reading 'id')
+--- STACK TRACE ---
+TypeError: Cannot read properties of undefined (reading 'id')
+    at ReserveController.postCreateReserve (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:70:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+-------------------
+2024-12-18 14:54:53 [ERROR]: Error to create reserve Cannot read properties of undefined (reading 'id')
+--- STACK TRACE ---
+TypeError: Cannot read properties of undefined (reading 'id')
+    at ReserveController.postCreateReserve (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:71:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+-------------------
+2024-12-18 19:54:35 [ERROR]: Error fetching reserve: column re.room_mid does not exist
+--- STACK TRACE ---
+error: column re.room_mid does not exist
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async ReserveModel.findById (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\model\ReserveModel.js:42:26)
+    at async ReserveController.getPageReserveDetails (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:110:34)
+-------------------
+2024-12-18 19:55:05 [ERROR]: Error fetching reserve: column re.room_mid does not exist
+--- STACK TRACE ---
+error: column re.room_mid does not exist
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async ReserveModel.findById (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\model\ReserveModel.js:42:26)
+    at async ReserveController.getPageReserveDetails (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:110:34)
+-------------------
+2024-12-18 19:55:47 [ERROR]: Error fetching reserve: column re.eployee_id does not exist
+--- STACK TRACE ---
+error: column re.eployee_id does not exist
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async ReserveModel.findById (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\model\ReserveModel.js:42:26)
+    at async ReserveController.getPageReserveDetails (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:110:34)
+-------------------
+2024-12-18 19:55:49 [ERROR]: Error fetching reserve: column re.eployee_id does not exist
+--- STACK TRACE ---
+error: column re.eployee_id does not exist
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async ReserveModel.findById (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\model\ReserveModel.js:42:26)
+    at async ReserveController.getPageReserveDetails (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:110:34)
+-------------------
+2024-12-18 19:55:57 [ERROR]: Error fetching reserve: column reference "id" is ambiguous
+--- STACK TRACE ---
+error: column reference "id" is ambiguous
+    at C:\Users\vinicius\Desktop\projects\sistema-de-reserva\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async ReserveModel.findById (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\model\ReserveModel.js:42:26)
+    at async ReserveController.getPageReserveDetails (C:\Users\vinicius\Desktop\projects\sistema-de-reserva\src\controller\ReserveController.js:110:34)
+-------------------
+2024-12-18 20:31:42 [ERROR]: Error fetching rooms Availables json
+2024-12-18 20:31:46 [ERROR]: Error fetching rooms Availables json

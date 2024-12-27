@@ -9,6 +9,23 @@ const { v4: uuidv4 } = require('uuid')
 
 class ReserveController {
 
+    static STATUS_RESERVE = {
+        CONFIRMED: 'CONFIRMED',
+        FINALIZED: 'FINALIZED',
+        CANCELLED: 'CANCELLED'
+    }
+
+    static async getReserves(req, res, next) {
+        try {
+            logger.info('Fetching all reserves')
+            const reserves = await ReserveModel.findAll()
+            res.render('reserve/list', { reserves })
+        } catch (error) {
+            logger.error('Error fetching reserves:', error)
+            next(error)
+        }
+    }
+
     static async getPageCreateReserve(req, res, next) {
         try {
             logger.info('Rendering page create reserve')
@@ -78,12 +95,93 @@ class ReserveController {
 
             await ReserveModel.create(reserve)
             logger.info('Reserve successfully created')
-            req.flash('success', 'The reservation has been successfully registered.')
+            req.flash('sucess', 'The reservation has been successfully registered.')
             res.redirect('/reserve/create')
         } catch (error) {
             logger.error('Error to create reserve', error)
             next(error)
         }
+    }
+
+    static async getPageReserveDetails(req, res, next) {
+        try {
+            logger.info('Fetching reserve details')
+            const { id } = req.params
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                logger.warn('Validation errors when fetching details')
+                return res.redirect('/reserve/')
+            }
+
+            const reserveFound = await ReserveModel.findById(id)
+            if (!reserveFound) {
+                logger.warn(`Reserve with ID ${id} not found`)
+                return res.redirect('/reserve/')
+            }
+
+            logger.info(`Reserve details fetched for ID ${id}`)
+            res.render('reserve/details', { reserve: reserveFound })
+        } catch (error) {
+            logger.error('Error fetching reserve:', error)
+            next(error)
+        }
+    }
+
+
+    static async postFinalizeReserve(req, res, next) {
+        logger.info('Fetching reserve details')
+        const { id } = req.params
+        const { path } = req.body
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            logger.warn('Validation errors when fetching details')
+            return res.redirect('/reserve')
+        }
+
+        const reserveFound = await ReserveModel.findById(id)
+        if (!reserveFound) {
+            logger.warn(`Reserve with ID ${id} not found`)
+            return res.redirect('/reserve')
+        }
+
+        const statusCanceled = ReserveController.STATUS_RESERVE.FINALIZED
+        await ReserveModel.changeStatusById({ id, status: statusCanceled })
+        logger.info(`Reservation with ID ${id} finalized successfully`)
+
+        if (path !== '/reserve/') {
+            const viewPath = `${path}/${id}`
+            req.flash('sucess', 'Reservation finalized successfully.')
+            return res.redirect(viewPath)
+        }
+        return res.redirect('/reserve')
+    }
+
+    static async postCancelReserve(req, res, next) {
+        logger.info('Fetching reserve details')
+        const { id } = req.params
+        const { path } = req.body
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            logger.warn('Validation errors when fetching details')
+            return res.redirect('/reserve')
+        }
+
+        const reserveFound = await ReserveModel.findById(id)
+        if (!reserveFound) {
+            logger.warn(`Reserve with ID ${id} not found`)
+            return res.redirect('/reserve')
+        }
+
+        const statusCanceled = ReserveController.STATUS_RESERVE.CANCELLED
+        await ReserveModel.changeStatusById({ id, status: statusCanceled })
+        logger.info(`Reservation with ID ${id} canceled successfully`)
+
+        if (path !== '/reserve/') {
+            const viewPath = `${path}/${id}`
+            req.flash('sucess', 'Reservation canceled successfully.')
+            return res.redirect(viewPath)
+        }
+        return res.redirect('/reserve')
     }
 
 }

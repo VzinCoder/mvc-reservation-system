@@ -1,7 +1,7 @@
 const { validationResult } = require("express-validator")
 const logger = require("../util/logger")
 const RoomModel = require("../model/RoomModel")
-const { v4: uuidv4 } = require('uuid')
+const { v4: uuidv4 } = require('uuid');
 
 class RoomController {
 
