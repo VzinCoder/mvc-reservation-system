@@ -14,6 +14,7 @@ const routerAuth = require('./routes/auth')
 const routerReserve = require('./routes/reserve')
 const { initDb, pool } = require('./db/conn')
 const logger = require('./util/logger')
+const DashboardController = require('./controller/DashboardController')
 
 const PORT = 3000
 const DIR_PUBLIC_FILES = path.join(__dirname, 'public')
@@ -58,7 +59,7 @@ server.use(async (req, res, next) => {
         }
         next()
     } catch (error) {
-        logger.error('Error add admin in session',error)
+        logger.error('Error add admin in session', error)
         next(error)
     }
 })
@@ -67,10 +68,10 @@ server.use('/employee', routerEmployee)
 server.use('/customer', routerCustomer)
 server.use('/room', routerRoom)
 server.use('/auth', routerAuth)
-server.use('/reserve',routerReserve)
+server.use('/reserve', routerReserve)
 
-server.get('/', (req, res) => {
-    res.render('index.ejs')
+server.get('/', (req, res, next) => {
+    DashboardController.getPageHome(req, res, next)
 })
 
 server.use((req, res, next) => {
